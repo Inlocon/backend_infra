@@ -1,0 +1,86 @@
+name: terraform-apply
+
+on:
+  push:
+    branches: [ "main" ]
+  workflow_dispatch: {}
+
+permissions:
+  id-token: write # for OIDC
+  contents: read #
+
+jobs:
+  test:
+    name: Apply (test)
+    runs-on: ubuntu-latest
+    # environment: test -> add later
+    defaults:
+      run:
+        working-directory: infra/envs/test
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Configure AWS credentials (OIDC)
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: ${{ secrets.AWS_ROLE_ARN }}
+          aws-region: ${{ secrets.AWS_REGION }}
+
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v3
+        with:
+          terraform_version: 1.12.2
+
+      - name: Terraform Init
+        run: |
+          terraform init \
+            -backend-config=backend.hcl \
+
+      - name: Terraform Validate
+        run: terraform validate
+
+      - name: Terraform Plan
+        run: terraform plan -input=false -out=tfplan
+
+      - name: Terraform Apply
+        if: github.ref == 'refs/heads/main'
+        run: terraform apply -input=false -auto-approve tfplan
+
+#  prod:
+#    name: Apply (prod)
+#    runs-on: ubuntu-latest
+#    needs: test
+#    # environment: prod   # potentially add reviews later (github/settings/environment/prod)
+#    defaults:
+#      run:
+#        working-directory: infra/envs/prod
+#    steps:
+#      - name: Checkout
+#        uses: actions/checkout@v4
+#
+#      - name: Configure AWS credentials (OIDC)
+#        uses: aws-actions/configure-aws-credentials@v4
+#        with:
+#          role-to-assume: ${{ secrets.AWS_ROLE_ARN }}
+#          aws-region: ${{ secrets.AWS_REGION }}
+#
+#      - name: Setup Terraform
+#        uses: hashicorp/setup-terraform@v3
+#        with:
+#          terraform_version: 1.7.5
+#
+#      - name: Terraform Init
+#        run: |
+#          terraform init \
+#            -backend-config=backend.hcl \
+#
+#      - name: Terraform Validate
+#        run: terraform validate
+#
+#      - name: Terraform Plan
+#        run: terraform plan -input=false -out=tfplan
+#
+#      - name: Terraform Apply
+#        if: github.ref == 'refs/heads/main'
+#        run: terraform apply -input=false -auto-approve tfplan

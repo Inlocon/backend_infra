@@ -1,0 +1,11 @@
+.terraform/
+.terraform.*
+*.tfstate
+*.tfstate.*
+crash.log
+*.tfvars
+.terraform.lock.hcl
+tfplan*
+.idea/
+infra_old/
+TODO
