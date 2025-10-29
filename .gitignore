@@ -8,4 +8,5 @@ crash.log
 tfplan*
 .idea/
 infra_old/
+temp/
 TODO
