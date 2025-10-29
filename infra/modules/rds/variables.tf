@@ -56,7 +56,7 @@ variable "db_name" {
 variable "username" {
   description = "Master username"
   type        = string
-  default     = "app"
+  default     = "postgres"
 }
 
 variable "backup_retention_days" {

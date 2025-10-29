@@ -3,8 +3,8 @@
 ############################################
 
 locals {
-  family        = "postgres${var.engine_major}"                # e.g., postgres16
-  secret_name   = coalesce(var.secret_name, "${var.name}_db")  # e.g., test/db
+  family        = "postgres${var.engine_major}"
+  secret_name   = coalesce(var.secret_name, "${var.name}_db_credentials")
   username_safe = var.username
 }
 
@@ -12,7 +12,7 @@ locals {
 # Networking bits for RDS
 ############################################
 
-# Subnet group (use your private subnet IDs; single-AZ is fine with 1 subnet)
+# allow-list of subnets where aws may place the instance
 resource "aws_db_subnet_group" "this" {
   name       = "${var.name}_db_subnet_grp"
   subnet_ids = var.subnet_ids
@@ -21,18 +21,11 @@ resource "aws_db_subnet_group" "this" {
   }
 }
 
-# Security group: no ingress yet; we'll wire ECS -> DB later from env layer
+# sg attached to the db
 resource "aws_security_group" "db" {
   name        = "${var.name}_db_sg"
   description = "DB SG (${var.name})"
   vpc_id      = var.vpc_id
-
-  egress {
-    from_port   = 0
-    to_port     = 0
-    protocol    = "-1"
-    cidr_blocks = ["0.0.0.0/0"]
-  }
 
   tags = { Name = "${var.name}_db_sg" }
 }
@@ -42,19 +35,18 @@ resource "aws_security_group" "db" {
 ############################################
 
 resource "aws_db_parameter_group" "this" {
-  name        = "${var.name}_pg"
+  name        = "parameter_group_${var.name}_db"
   family      = local.family
   description = "Param group for ${var.name}"
 
-  # Minimal, safe tweaks (PostgreSQL)
   parameter {
     name  = "log_min_duration_statement"
-    value = "1000"  # 1s slow query threshold
+    value = "3000"
   }
 
   parameter {
     name  = "idle_in_transaction_session_timeout"
-    value = "60000" # 60s
+    value = "60000"
   }
 
   tags = { Name = "${var.name}_pg" }
@@ -66,8 +58,6 @@ resource "aws_db_parameter_group" "this" {
 
 resource "random_password" "db" {
   length           = 32
-  override_characters = "!@#%^*-_=+"
-  special          = true
 }
 
 resource "aws_secretsmanager_secret" "db" {
@@ -89,7 +79,7 @@ resource "aws_secretsmanager_secret_version" "creds" {
 ############################################
 
 resource "aws_db_instance" "this" {
-  identifier              = "${var.name}_db"
+  identifier              = "${var.name}-db"
   engine                  = var.engine
   engine_version          = var.engine_version
   instance_class          = var.instance_class
@@ -99,7 +89,7 @@ resource "aws_db_instance" "this" {
   storage_type            = var.storage_type
   storage_encrypted       = true
 
-  name                    = var.db_name
+  name                    = "${var.name}_db"
   username                = local.username_safe
   password                = random_password.db.result
   port                    = var.port
