@@ -35,9 +35,9 @@ resource "aws_security_group" "db" {
 ############################################
 
 resource "aws_db_parameter_group" "this" {
-  name        = "parameter_group_${var.name}_db"
+  name        = "parameter-group-${var.name}-db"
   family      = local.family
-  description = "Param group for ${var.name}"
+  description = "Param group for ${var.name}-db"
 
   parameter {
     name  = "log_min_duration_statement"
@@ -89,7 +89,7 @@ resource "aws_db_instance" "this" {
   storage_type            = var.storage_type
   storage_encrypted       = true
 
-  name                    = "${var.name}_db"
+  db_name                    = "${var.name}_db"
   username                = local.username_safe
   password                = random_password.db.result
   port                    = var.port
