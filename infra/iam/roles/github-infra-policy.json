@@ -1,0 +1,75 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "StateS3",
+      "Effect": "Allow",
+      "Action": ["s3:ListBucket"],
+      "Resource": ["arn:aws:s3:::backend-inlocon-terraform"]
+    },
+    {
+      "Sid": "StateS3Objects",
+      "Effect": "Allow",
+      "Action": ["s3:GetObject","s3:PutObject","s3:DeleteObject"],
+      "Resource": ["arn:aws:s3:::backend-inlocon-terraform/*"]
+    },
+    {
+      "Sid": "Reads",
+      "Effect": "Allow",
+      "Action": [
+        "ec2:DescribeAvailabilityZones",
+        "ec2:DescribeVpcs","ec2:DescribeSubnets","ec2:DescribeInternetGateways",
+        "ec2:DescribeRouteTables","ec2:DescribeRoutes","ec2:DescribeSecurityGroups",
+        "rds:Describe*","rds:ListTagsForResource",
+        "secretsmanager:ListSecrets","secretsmanager:DescribeSecret","secretsmanager:GetSecretValue","secretsmanager:ListSecretVersionIds"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "Ec2NetworkingCrud",
+      "Effect": "Allow",
+      "Action": [
+        "ec2:CreateVpc","ec2:DeleteVpc","ec2:ModifyVpcAttribute",
+        "ec2:CreateSubnet","ec2:DeleteSubnet","ec2:ModifySubnetAttribute",
+        "ec2:CreateInternetGateway","ec2:DeleteInternetGateway","ec2:AttachInternetGateway","ec2:DetachInternetGateway",
+        "ec2:CreateRouteTable","ec2:DeleteRouteTable","ec2:AssociateRouteTable","ec2:DisassociateRouteTable","ec2:ReplaceRouteTableAssociation",
+        "ec2:CreateRoute","ec2:ReplaceRoute","ec2:DeleteRoute",
+        "ec2:CreateTags","ec2:DeleteTags"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "Ec2SecurityGroupsCrud",
+      "Effect": "Allow",
+      "Action": [
+        "ec2:CreateSecurityGroup","ec2:DeleteSecurityGroup",
+        "ec2:AuthorizeSecurityGroupIngress","ec2:AuthorizeSecurityGroupEgress",
+        "ec2:RevokeSecurityGroupIngress","ec2:RevokeSecurityGroupEgress",
+        "ec2:UpdateSecurityGroupRuleDescriptionsIngress","ec2:UpdateSecurityGroupRuleDescriptionsEgress",
+        "ec2:CreateTags","ec2:DeleteTags"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "RdsCrud",
+      "Effect": "Allow",
+      "Action": [
+        "rds:CreateDBInstance","rds:ModifyDBInstance","rds:DeleteDBInstance","rds:RebootDBInstance",
+        "rds:CreateDBSubnetGroup","rds:ModifyDBSubnetGroup","rds:DeleteDBSubnetGroup",
+        "rds:CreateDBParameterGroup","rds:ModifyDBParameterGroup","rds:ResetDBParameterGroup","rds:DeleteDBParameterGroup",
+        "rds:AddTagsToResource","rds:RemoveTagsFromResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "SecretsCrudDb",
+      "Effect": "Allow",
+      "Action": [
+        "secretsmanager:CreateSecret","secretsmanager:UpdateSecret","secretsmanager:PutSecretValue",
+        "secretsmanager:TagResource","secretsmanager:UntagResource",
+        "secretsmanager:DeleteSecret","secretsmanager:RestoreSecret","secretsmanager:RotateSecret"
+      ],
+      "Resource": ["arn:aws:secretsmanager:eu-central-1:864981740157:secret:*"]
+    }
+  ]
+}

@@ -1,0 +1,10 @@
+# 1) Create role with trust
+aws iam create-role \
+  --role-name github-infra \
+  --assume-role-policy-document file://roles/github-infra-trust.json
+
+# 2) Attach the inline policy
+aws iam put-role-policy \
+  --role-name github-infra \
+  --policy-name github-infra-permissions \
+  --policy-document file://roles/github-infra-policy.json
