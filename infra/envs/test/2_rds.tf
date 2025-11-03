@@ -15,7 +15,7 @@ module "rds" {
   vpc_id      = module.network.vpc_id
   subnet_ids  = module.network.private_subnet_ids  # private subnets from network module
 
-  # Engine/version (module defaults to postgres 16; leave null to let AWS pick a minor)
+  # Engine/version (module defaults to postgres 17; leave null to let AWS pick a minor)
   engine_version        = null
   instance_class        = local.rds_instance_class
   allocated_storage     = local.rds_allocated_storage

@@ -20,9 +20,9 @@ variable "engine" {
 }
 
 variable "engine_major" {
-  description = "Engine major version for parameter group family (e.g., 16). Leave default unless you need older."
+  description = "Engine major version for parameter group family (e.g., 17). Leave default unless you need older."
   type        = number
-  default     = 16
+  default     = 17
 }
 
 variable "engine_version" {
