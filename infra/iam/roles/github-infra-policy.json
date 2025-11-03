@@ -18,7 +18,7 @@
       "Effect": "Allow",
       "Action": [
         "ec2:DescribeAvailabilityZones",
-        "ec2:DescribeVpcs","ec2:DescribeSubnets","ec2:DescribeInternetGateways",
+        "ec2:DescribeVpcs","ec2:DescribeSubnets","ec2: DescribeNetworkInterfaces","ec2:DescribeInternetGateways",
         "ec2:DescribeRouteTables","ec2:DescribeRoutes","ec2:DescribeSecurityGroups",
         "rds:Describe*","rds:ListTagsForResource",
         "secretsmanager:ListSecrets","secretsmanager:DescribeSecret","secretsmanager:GetSecretValue","secretsmanager:ListSecretVersionIds"
@@ -67,7 +67,8 @@
       "Action": [
         "secretsmanager:CreateSecret","secretsmanager:UpdateSecret","secretsmanager:PutSecretValue",
         "secretsmanager:TagResource","secretsmanager:UntagResource",
-        "secretsmanager:DeleteSecret","secretsmanager:RestoreSecret","secretsmanager:RotateSecret"
+        "secretsmanager:DeleteSecret","secretsmanager:RestoreSecret","secretsmanager:RotateSecret",
+        "secretsmanager:GetResourcePolicy"
       ],
       "Resource": ["arn:aws:secretsmanager:eu-central-1:864981740157:secret:*"]
     }
