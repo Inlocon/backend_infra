@@ -31,12 +31,12 @@ module "network" {
       public     = false
       az         = "eu-central-1a"
     }
-#     add later, if rds-instance should be deployed multi-az
-#     private-2 = {
-#       cidr_block = "10.10.129.0/24"
-#       public     = false
-#       az         = "eu-central-1b"
-#     }
+    # add later, if rds-instance should be deployed multi-az
+    private-2 = {
+      cidr_block = "10.10.129.0/24"
+      public     = false
+      az         = "eu-central-1b"
+    }
   }
   tags = {
     project     = "inlocon-backend"
