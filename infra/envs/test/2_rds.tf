@@ -27,3 +27,13 @@ module "rds" {
   apply_immediately   = true
 
 }
+
+# allow connection to test_db from an EC2 instance
+resource "aws_security_group_rule" "test_db_access_from_ec2" {
+  type                     = "ingress"
+  security_group_id        = module.rds.db_sg_id
+  protocol                 = "tcp"
+  from_port                = 5432
+  to_port                  = 5432
+  source_security_group_id = "sg-0a971c59890a989c0"
+}
