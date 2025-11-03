@@ -89,7 +89,7 @@ resource "aws_db_instance" "this" {
   storage_type            = var.storage_type
   storage_encrypted       = true
 
-  db_name                    = "${var.name}_db"
+  db_name                 = "${var.name}_db"
   username                = local.username_safe
   password                = random_password.db.result
   port                    = var.port
@@ -113,7 +113,7 @@ resource "aws_secretsmanager_secret_version" "connection" {
     engine   = var.engine
     host     = aws_db_instance.this.address
     port     = var.port
-    dbname   = var.db_name
+    dbname   = "${var.name}_db"
     username = local.username_safe
     password = random_password.db.result
   })

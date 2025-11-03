@@ -47,12 +47,6 @@ variable "storage_type" {
   default     = "gp3"
 }
 
-variable "db_name" {
-  description = "Initial database name"
-  type        = string
-  default     = "appdb"
-}
-
 variable "username" {
   description = "Master username"
   type        = string
