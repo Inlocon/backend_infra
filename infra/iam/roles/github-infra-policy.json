@@ -14,6 +14,21 @@
       "Resource": ["arn:aws:s3:::backend-inlocon-terraform/*"]
     },
     {
+      "Sid": "AllowCreateBucket",
+      "Effect": "Allow",
+      "Action": ["s3:CreateBucket"],
+      "Resource": "*"
+    },
+    {
+      "Sid": "S3StateBucketManage",
+      "Effect": "Allow",
+      "Action": "s3:*",
+      "Resource": ["arn:aws:s3:::test-backend-inlocon*",
+                   "arn:aws:s3:::test-backend-inlocon*/*",
+                   "arn:aws:s3:::prod-backend-inlocon*",
+                   "arn:aws:s3:::prod-backend-inlocon*/*"]
+    },
+    {
       "Sid": "Reads",
       "Effect": "Allow",
       "Action": [
