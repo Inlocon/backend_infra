@@ -21,6 +21,11 @@ output "vpc_id" {
   value       = aws_vpc.this.id
 }
 
+output "vpc_cidr_block" {
+  description = "The VPC IPv4 CIDR"
+  value       = aws_vpc.this.cidr_block
+}
+
 output "public_subnets" {
   description = "Map: subnet_key => { subnet_id, availability_zone, cidr_block } for public subnets"
   value       = local.output_public_subnets
@@ -40,4 +45,14 @@ output "public_subnet_ids" {
 output "private_subnet_ids" {
   description = "List of private subnet IDs"
   value       = [for k in keys(local.private_subnets) : aws_subnet.this[k].id]
+}
+
+output "public_route_table_id" {
+  description = "The public route table id."
+  value       = aws_route_table.public[0].id
+}
+
+output "private_route_table_id" {
+  description = "The private route table id."
+  value       = aws_route_table.private[0].id
 }
