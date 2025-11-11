@@ -44,7 +44,6 @@ locals {
 }
 
 resource "aws_s3_bucket_policy" "this" {
-  count  = length(local.policy_statements) > 0 ? 1 : 0
   bucket = aws_s3_bucket.this.id
   policy = jsonencode(local.bucket_policy)
 }
