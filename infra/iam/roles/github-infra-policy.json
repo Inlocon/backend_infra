@@ -122,6 +122,18 @@
       }
     },
     {
+      "Sid": "IamManageInstanceProfilesOptional",
+      "Effect": "Allow",
+      "Action": [
+        "iam:CreateInstanceProfile",
+        "iam:GetInstanceProfile",
+        "iam:DeleteInstanceProfile",
+        "iam:AddRoleToInstanceProfile",
+        "iam:RemoveRoleFromInstanceProfile"
+      ],
+      "Resource": "*"
+    },
+    {
       "Sid": "Ec2SecurityGroupsCrud",
       "Effect": "Allow",
       "Action": [
