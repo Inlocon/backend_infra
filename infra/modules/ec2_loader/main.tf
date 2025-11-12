@@ -29,9 +29,9 @@ resource "aws_instance" "this" {
   vpc_security_group_ids = [aws_security_group.this.id]
   iam_instance_profile = aws_iam_instance_profile.this.name
 
-  # IMDSv2 required
+  #
   metadata_options {
-    http_tokens = "required"
+    http_tokens = "optional"
   }
 
   # Root volume
