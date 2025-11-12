@@ -36,5 +36,5 @@ module "rds" {
 #   protocol                 = "tcp"
 #   from_port                = 5432
 #   to_port                  = 5432
-#   source_security_group_id = "sg-0a971c59890a989c0"
+#   source_security_group_id = module.ec2_loader.security_group_id
 # }
