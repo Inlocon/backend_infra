@@ -1,0 +1,43 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "S3State",
+      "Effect": "Allow",
+      "Action": ["s3:ListBucket"],
+      "Resource": ["arn:aws:s3:::backend-inlocon-terraform"]
+    },
+    {
+      "Sid": "S3StateObjects",
+      "Effect": "Allow",
+      "Action": ["s3:GetObject","s3:PutObject","s3:DeleteObject"],
+      "Resource": ["arn:aws:s3:::backend-inlocon-terraform/*"]
+    },
+    {
+      "Sid": "S3AllowCreateBucket",
+      "Effect": "Allow",
+      "Action": ["s3:CreateBucket"],
+      "Resource": "*"
+    },
+    {
+      "Sid": "S3AllowEverythingOnBackendBuckets",
+      "Effect": "Allow",
+      "Action": "s3:*",
+      "Resource": ["arn:aws:s3:::test-backend-inlocon*",
+                   "arn:aws:s3:::test-backend-inlocon*/*",
+                   "arn:aws:s3:::prod-backend-inlocon*",
+                   "arn:aws:s3:::prod-backend-inlocon*/*"]
+    },
+    {
+      "Sid": "EC2RdsIamSecretsmanagerAll",
+      "Effect": "Allow",
+      "Action": [
+        "ec2:*",
+        "rds:*",
+        "iam:*",
+        "secretsmanager:*"
+      ],
+      "Resource": "*"
+    }]
+}
+
