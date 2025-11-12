@@ -114,12 +114,7 @@
         "iam:ListInstanceProfiles",
         "iam:GetInstanceProfile"
       ],
-      "Resource": "arn:aws:iam::864981740157:role/ec2-migration",
-      "Condition": {
-        "StringEquals": {
-          "iam:PassedToService": "ec2.amazonaws.com"
-        }
-      }
+      "Resource": "*"
     },
     {
       "Sid": "IamManageInstanceProfilesOptional",
