@@ -2,25 +2,25 @@
   "Version": "2012-10-17",
   "Statement": [
     {
-      "Sid": "StateS3",
+      "Sid": "S3State",
       "Effect": "Allow",
       "Action": ["s3:ListBucket"],
       "Resource": ["arn:aws:s3:::backend-inlocon-terraform"]
     },
     {
-      "Sid": "StateS3Objects",
+      "Sid": "S3StateObjects",
       "Effect": "Allow",
       "Action": ["s3:GetObject","s3:PutObject","s3:DeleteObject"],
       "Resource": ["arn:aws:s3:::backend-inlocon-terraform/*"]
     },
     {
-      "Sid": "AllowCreateBucket",
+      "Sid": "S3AllowCreateBucket",
       "Effect": "Allow",
       "Action": ["s3:CreateBucket"],
       "Resource": "*"
     },
     {
-      "Sid": "S3StateBucketManage",
+      "Sid": "S3AllowEverythingOnBackendBuckets",
       "Effect": "Allow",
       "Action": "s3:*",
       "Resource": ["arn:aws:s3:::test-backend-inlocon*",
@@ -32,11 +32,9 @@
       "Sid": "Reads",
       "Effect": "Allow",
       "Action": [
-        "ec2:DescribeAvailabilityZones",
-        "ec2:DescribeVpcs","ec2:DescribeSubnets","ec2:DescribeNetworkInterfaces","ec2:DescribeInternetGateways",
-        "ec2:DescribeRouteTables","ec2:DescribeRoutes","ec2:DescribeSecurityGroups",
+        "ec2:Describe*",
         "rds:Describe*","rds:ListTagsForResource",
-        "secretsmanager:ListSecrets","secretsmanager:DescribeSecret","secretsmanager:GetSecretValue","secretsmanager:ListSecretVersionIds"
+        "secretsmanager:Describe*","secretsmanager:ListSecrets","secretsmanager:GetSecretValue","secretsmanager:ListSecretVersionIds"
       ],
       "Resource": "*"
     },
@@ -52,6 +50,76 @@
         "ec2:CreateTags","ec2:DeleteTags"
       ],
       "Resource": "*"
+    },
+    {
+      "Sid": "Ec2InstanceCrud",
+      "Effect": "Allow",
+      "Action": [
+        "ec2:RunInstances",
+        "ec2:TerminateInstances",
+        "ec2:StartInstances",
+        "ec2:StopInstances",
+        "ec2:RebootInstances",
+        "ec2:ModifyInstanceAttribute",
+        "ec2:CreateImage",
+        "ec2:CreateTags",
+        "ec2:DeleteTags"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "Ec2StorageAndEniCrud",
+      "Effect": "Allow",
+      "Action": [
+        "ec2:CreateVolume",
+        "ec2:DeleteVolume",
+        "ec2:AttachVolume",
+        "ec2:DetachVolume",
+        "ec2:ModifyVolume",
+        "ec2:CreateNetworkInterface",
+        "ec2:DeleteNetworkInterface",
+        "ec2:AttachNetworkInterface",
+        "ec2:DetachNetworkInterface",
+        "ec2:ModifyNetworkInterfaceAttribute"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "Ec2Addresses",
+      "Effect": "Allow",
+      "Action": [
+        "ec2:AllocateAddress",
+        "ec2:ReleaseAddress",
+        "ec2:AssociateAddress",
+        "ec2:DisassociateAddress"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "Ec2IamInstanceProfileAttach",
+      "Effect": "Allow",
+      "Action": [
+        "ec2:AssociateIamInstanceProfile",
+        "ec2:ReplaceIamInstanceProfileAssociation",
+        "ec2:DisassociateIamInstanceProfile"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "IamPassRoleForEc2",
+      "Effect": "Allow",
+      "Action": [
+        "iam:PassRole",
+        "iam:GetRole",
+        "iam:ListInstanceProfiles",
+        "iam:GetInstanceProfile"
+      ],
+      "Resource": "arn:aws:iam::864981740157:role/ec2-migration",
+      "Condition": {
+        "StringEquals": {
+          "iam:PassedToService": "ec2.amazonaws.com"
+        }
+      }
     },
     {
       "Sid": "Ec2SecurityGroupsCrud",
