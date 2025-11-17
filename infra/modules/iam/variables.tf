@@ -1,5 +1,5 @@
 variable "env" {
-  description = "Should be 'test' or 'prod'."
+  description = "test/prod"
   type        = string
   default     = "test"
 }

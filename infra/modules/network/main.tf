@@ -9,6 +9,7 @@ locals {
   private_subnets = {
     for key, cfg in var.subnet_config : key => cfg if !try(cfg.public, false)
   }
+  tags = { resourceGroup = "networking" }
 }
 
 # VPC
@@ -17,9 +18,7 @@ locals {
     enable_dns_support   = true
     enable_dns_hostnames = true
 
-    tags = merge({
-      Name = var.vpc_config.name
-    }, var.tags)
+    tags = local.tags
   }
 
 # Subnets
@@ -33,7 +32,7 @@ resource "aws_subnet" "this" {
   tags = merge({
     Name   = each.key
     Access = try(each.value.public, false) ? "Public" : "Private"
-  }, var.tags)
+  }, local.tags)
 
   lifecycle {
     precondition {
@@ -48,7 +47,7 @@ resource "aws_internet_gateway" "this" {
   count  = length(local.public_subnets) > 0 ? 1 : 0
   vpc_id = aws_vpc.this.id
 
-  tags = merge({ Name = "${var.vpc_config.name}-igw" }, var.tags)
+  tags = local.tags
 }
 
 # Route table for public subnets (0.0.0.0/0 -> IGW)
@@ -56,7 +55,7 @@ resource "aws_route_table" "public" {
   count  = length(local.public_subnets) > 0 ? 1 : 0
   vpc_id = aws_vpc.this.id
 
-  tags = merge({ Name = "${var.vpc_config.name}-public-rt" }, var.tags)
+  tags = local.tags
 }
 
 resource "aws_route" "public_default" {
@@ -78,7 +77,7 @@ resource "aws_route_table" "private" {
   count  = length(local.private_subnets) > 0 ? 1 : 0
   vpc_id = aws_vpc.this.id
 
-  tags = merge({ Name = "${var.vpc_config.name}-private-rt" }, var.tags)
+  tags = local.tags
 }
 
 resource "aws_route_table_association" "private_assoc" {

@@ -1,3 +1,9 @@
+variable "env" {
+  description = "test/prod"
+  type        = string
+  default = "test"
+}
+
 variable "bucket_name" {
   type        = string
 }
@@ -12,10 +18,4 @@ variable "deny_insecure_transport" {
   description = "Deny non-TLS (http) access."
   type        = bool
   default     = true
-}
-
-variable "tags" {
-  description = "Tags to apply to all resources."
-  type        = map(string)
-  default     = {}
 }

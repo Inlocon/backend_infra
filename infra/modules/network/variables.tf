@@ -1,3 +1,9 @@
+variable "env" {
+  description = "test/prod"
+  type = string
+  default = "test"
+}
+
 variable "vpc_config" {
   description = "VPC settings"
   type = object({
@@ -32,8 +38,3 @@ EOT
   }
 }
 
-variable "tags" {
-  description = "Optional extra tags applied to all resources"
-  type        = map(string)
-  default     = {}
-}

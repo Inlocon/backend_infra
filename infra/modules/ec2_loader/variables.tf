@@ -1,12 +1,12 @@
+variable "env" {
+  description = "test/prod"
+  type        = string
+  default     = "test"
+}
+
 variable "ami_id" {
   description = "AMI to launch."
   type        = string
-}
-
-variable "env" {
-  description = "Environment (test/prod)"
-  type        = string
-  default     = "test"
 }
 
 variable "iam_role_name" {
@@ -29,12 +29,6 @@ variable "name" {
 variable "subnet_id" {
   description = "Subnet where the instance will live."
   type        = string
-}
-
-variable "tags" {
-  description = "Common tags."
-  type        = map(string)
-  default     = {}
 }
 
 variable "volume_size_gb" {

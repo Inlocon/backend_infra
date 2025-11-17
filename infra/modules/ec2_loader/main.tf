@@ -1,3 +1,7 @@
+locals {
+  tags = { resourceGroup = "ec2_loader"}
+}
+
 resource "aws_security_group" "this" {
   name        = "${var.env}-${var.name}-sg"
   description = "Minimal egress-only SG for ${var.env}-${var.name}"
@@ -11,7 +15,7 @@ resource "aws_security_group" "this" {
     ipv6_cidr_blocks = ["::/0"]
   }
 
-  tags = merge(var.tags, { Name = "${var.env}-${var.name}-sg" })
+  tags = local.tags
 }
 
 data "aws_subnet" "this" {
@@ -41,5 +45,5 @@ resource "aws_instance" "this" {
     delete_on_termination = true
   }
 
-  tags = merge(var.tags, { Name = "${var.env}-${var.name}" })
+  tags = local.tags
 }

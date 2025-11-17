@@ -1,9 +1,5 @@
 locals {
-  common_tags = {
-    Environment = var.env
-    ManagedBy   = "terraform"
-    Project     = "mywebapp"
-  }
+  tags = {resourceGroup = "IAM"}
 }
 
 #######################################
@@ -27,7 +23,7 @@ data "aws_iam_policy_document" "ec2_trust" {
 resource "aws_iam_role" "ec2_loader" {
   name               = "${var.env}-ec2-loader"
   assume_role_policy = data.aws_iam_policy_document.ec2_trust.json
-  tags               = local.common_tags
+  tags               = local.tags
 }
 
 resource "aws_iam_role_policy_attachment" "ec2_ssm_core" {

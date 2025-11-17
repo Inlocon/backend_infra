@@ -4,8 +4,9 @@
 
 locals {
   family        = "postgres${var.engine_major}"
-  secret_name   = coalesce(var.secret_name, "${var.name}_db_credentials")
+  secret_name   = coalesce(var.secret_name, "${var.env}_db_credentials")
   username_safe = var.username
+  tags = {resourceGroup = "${var.env}_db"}
 }
 
 ############################################
@@ -14,20 +15,17 @@ locals {
 
 # allow-list of subnets where aws may place the instance
 resource "aws_db_subnet_group" "this" {
-  name       = "${var.name}_db_subnet_grp"
+  name       = "${var.env}_db_subnet_grp"
   subnet_ids = var.subnet_ids
-  tags = {
-    Name = "${var.name}_db_subnet_grp"
-  }
+  tags = local.tags
 }
 
 # sg attached to the db
 resource "aws_security_group" "db" {
-  name        = "${var.name}_db_sg"
-  description = "DB SG (${var.name})"
+  name        = "${var.env}_db_sg"
+  description = "DB SG (${var.env})"
   vpc_id      = var.vpc_id
-
-  tags = { Name = "${var.name}_db_sg" }
+  tags = local.tags
 }
 
 ############################################
@@ -35,9 +33,9 @@ resource "aws_security_group" "db" {
 ############################################
 
 resource "aws_db_parameter_group" "this" {
-  name        = "parameter-group-${var.name}-db"
+  name        = "parameter-group-${var.env}-db"
   family      = local.family
-  description = "Param group for ${var.name}-db"
+  description = "Param group for ${var.env}-db"
 
   parameter {
     name  = "log_min_duration_statement"
@@ -49,7 +47,7 @@ resource "aws_db_parameter_group" "this" {
     value = "60000"
   }
 
-  tags = { Name = "${var.name}_pg" }
+  tags = local.tags
 }
 
 ############################################
@@ -62,7 +60,7 @@ resource "random_password" "db" {
 
 resource "aws_secretsmanager_secret" "db" {
   name = local.secret_name
-  tags = { Name = "${var.name}_db_secret" }
+  tags = local.tags
 }
 
 # First version: username/password only (available before instance exists)
@@ -79,7 +77,7 @@ resource "aws_secretsmanager_secret_version" "creds" {
 ############################################
 
 resource "aws_db_instance" "this" {
-  identifier              = "${var.name}-db"
+  identifier              = "${var.env}-db"
   engine                  = var.engine
   engine_version          = var.engine_version
   instance_class          = var.instance_class
@@ -89,7 +87,7 @@ resource "aws_db_instance" "this" {
   storage_type            = var.storage_type
   storage_encrypted       = true
 
-  db_name                 = "${var.name}_db"
+  db_name                 = "${var.env}_db"
   username                = local.username_safe
   password                = random_password.db.result
   port                    = var.port
@@ -103,7 +101,7 @@ resource "aws_db_instance" "this" {
   parameter_group_name    = aws_db_parameter_group.this.name
   skip_final_snapshot     = true
 
-  tags = { Name = "${var.name}_db" }
+  tags = local.tags
 }
 
 # Second secret version: add connection details after instance exists
@@ -113,7 +111,7 @@ resource "aws_secretsmanager_secret_version" "connection" {
     engine   = var.engine
     host     = aws_db_instance.this.address
     port     = var.port
-    dbname   = "${var.name}_db"
+    dbname   = "${var.env}_db"
     username = local.username_safe
     password = random_password.db.result
   })

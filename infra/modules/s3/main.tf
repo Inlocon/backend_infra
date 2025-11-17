@@ -1,7 +1,11 @@
+locals {
+  tags = {resourceGroup = "${var.env}_s3"}
+}
+
 resource "aws_s3_bucket" "this" {
   bucket = var.bucket_name
   force_destroy = var.force_destroy
-  tags   = var.tags
+  tags   = local.tags
 }
 
 # ACL-less buckets

@@ -1,6 +1,7 @@
-variable "name" {
-  description = "Short name/prefix for tags and resource names (e.g., test, prod)"
+variable "env" {
+  description = "test/prod"
   type        = string
+  default = "test"
 }
 
 variable "vpc_id" {
