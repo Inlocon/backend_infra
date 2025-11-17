@@ -11,7 +11,7 @@ locals {
 module "rds" {
   source = "../../modules/rds"
 
-  name        = "test"
+  env        = var.env
   vpc_id      = module.network.vpc_id
   subnet_ids  = module.network.private_subnet_ids  # private subnets from network module
 

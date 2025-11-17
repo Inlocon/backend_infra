@@ -38,9 +38,4 @@ module "network" {
       az         = "eu-central-1b"
     }
   }
-  tags = {
-    project     = "inlocon-backend"
-    environment = "test"
-    managed-by  = "terraform"
-  }
 }
