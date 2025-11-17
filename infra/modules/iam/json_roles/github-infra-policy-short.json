@@ -29,12 +29,13 @@
                    "arn:aws:s3:::prod-backend-inlocon*/*"]
     },
     {
-      "Sid": "EC2RdsIamSecretsmanagerAll",
+      "Sid": "EC2RdsIamSecretsmanagerECRAll",
       "Effect": "Allow",
       "Action": [
         "ec2:*",
-        "rds:*",
+        "ecr:*",
         "iam:*",
+        "rds:*",
         "secretsmanager:*"
       ],
       "Resource": "*"

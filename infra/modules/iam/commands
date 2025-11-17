@@ -7,4 +7,4 @@ aws iam create-role \
 aws iam put-role-policy \
   --role-name github-infra \
   --policy-name github-infra-permissions \
-  --policy-document file://roles/github-infra-policy.json
+  --policy-document file://json_roles/github-infra-policy-short.json
