@@ -3,9 +3,9 @@ name: terraform-apply-test
 on:
   push:
     branches: [ "main" ]
-  paths:
-    - 'infra/envs/test/**'
-    - '.github/workflows/infra-test.yml'
+    paths:
+      - 'infra/envs/test/**'
+      - '.github/workflows/infra-test.yml'
 
 permissions:
   id-token: write # for OIDC

@@ -3,9 +3,9 @@ name: terraform-apply-common
 on:
   push:
     branches: [ "main" ]
-  paths:
-    - 'infra/envs/common/**'
-    - '.github/workflows/infra-common.yml'
+    paths:
+      - 'infra/envs/common/**'
+      - '.github/workflows/infra-common.yml'
 
 permissions:
   id-token: write # for OIDC

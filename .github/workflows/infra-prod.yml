@@ -3,9 +3,9 @@ name: terraform-apply-prod
 on:
   push:
     branches: [ "main" ]
-  paths:
-    - 'infra/envs/prod/**'
-    - '.github/workflows/infra-prod.yml'
+    paths:
+      - 'infra/envs/prod/**'
+      - '.github/workflows/infra-prod.yml'
 
 permissions:
   id-token: write # for OIDC
