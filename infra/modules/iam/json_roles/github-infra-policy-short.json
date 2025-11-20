@@ -33,8 +33,10 @@
       "Effect": "Allow",
       "Action": [
         "acm:*",
+        "cloudtrail:*",
         "ec2:*",
         "ecr:*",
+        "elasticloadbalancing:*",
         "iam:*",
         "rds:*",
         "secretsmanager:*"
