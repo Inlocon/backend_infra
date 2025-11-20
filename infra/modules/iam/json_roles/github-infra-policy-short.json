@@ -29,9 +29,10 @@
                    "arn:aws:s3:::prod-backend-inlocon*/*"]
     },
     {
-      "Sid": "EC2RdsIamSecretsmanagerECRAll",
+      "Sid": "AllowAllForSelectedServices",
       "Effect": "Allow",
       "Action": [
+        "acm:*",
         "ec2:*",
         "ecr:*",
         "iam:*",
