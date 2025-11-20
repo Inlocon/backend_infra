@@ -39,7 +39,8 @@
         "elasticloadbalancing:*",
         "iam:*",
         "rds:*",
-        "secretsmanager:*"
+        "secretsmanager:*",
+        "ssm:*"
       ],
       "Resource": "*"
     }]

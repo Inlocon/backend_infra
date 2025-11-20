@@ -4,3 +4,10 @@ module "acm_certificate" {
 }
 
 # add stuff for load balancing here
+resource "aws_ssm_parameter" "workflow_test" {
+  name  = "/infra/test"
+  type  = "String"
+  value = "ok"
+
+  overwrite = true
+}
