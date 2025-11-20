@@ -1,0 +1,49 @@
+name: terraform-apply-test
+
+on:
+  push:
+    branches: [ "main" ]
+  paths:
+    - 'infra/envs/test/**'
+    - '.github/workflows/infra-test.yml'
+
+permissions:
+  id-token: write # for OIDC
+  contents: read #
+
+jobs:
+  test:
+    name: Apply (test)
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: infra/envs/test
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Configure AWS credentials (OIDC)
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: ${{ secrets.AWS_ROLE_ARN }}
+          aws-region: ${{ secrets.AWS_REGION }}
+
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v3
+        with:
+          terraform_version: 1.12.2
+
+      - name: Terraform Init
+        run: |
+          terraform init \
+            -backend-config=backend.hcl -input=false\
+
+      - name: Terraform Validate
+        run: terraform validate
+
+      - name: Terraform Plan
+        run: terraform plan -input=false -out=tfplan
+
+      - name: Terraform Apply
+        if: github.ref == 'refs/heads/main'
+        run: terraform apply -input=false -auto-approve tfplan
