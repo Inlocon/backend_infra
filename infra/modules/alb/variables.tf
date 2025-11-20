@@ -1,5 +1,5 @@
 variable "name" {
-  description = "ALB name/prefix (e.g., test-app)"
+  description = "ALB name/prefix (e.g., test-backend)"
   type        = string
 }
 
@@ -11,7 +11,7 @@ variable "vpc_id" {
 variable "subnet_ids" {
   description = <<EOT
 List of **public** subnet IDs for the ALB.
-⚠️ Application Load Balancers require at least **two subnets in different AZs**.
+Application Load Balancers require at least **two subnets in different AZs**.
 (You can keep tasks in one AZ; ALB can span 2 AZs.)
 EOT
   type = list(string)
