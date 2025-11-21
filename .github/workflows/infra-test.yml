@@ -5,6 +5,7 @@ on:
     branches: [ "main" ]
     paths:
       - 'infra/envs/test/**'
+      - 'infra/modules/**'
       - '.github/workflows/infra-test.yml'
 
 permissions:

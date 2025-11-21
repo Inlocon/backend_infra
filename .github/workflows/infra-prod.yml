@@ -5,6 +5,7 @@ on:
     branches: [ "main" ]
     paths:
       - 'infra/envs/prod/**'
+      - 'infra/modules/**'
       - '.github/workflows/infra-prod.yml'
 
 permissions:
