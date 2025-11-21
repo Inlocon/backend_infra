@@ -1,56 +1,66 @@
+locals {
+  tags = { resourceGroup = "alb"}
+}
+
 ############################################
 # Security Group (public 80/443 in)
 ############################################
 resource "aws_security_group" "alb" {
-  name        = "${var.name}-alb-sg"
-  description = "ALB SG (${var.name})"
+  name        = "${var.env}-alb-sg"
+  description = "ALB SG (${var.env})"
   vpc_id      = var.vpc_id
 
   # Inbound 80 and 443 from Internet
-  ingress { from_port = 80  to_port = 80  protocol = "tcp" cidr_blocks = ["0.0.0.0/0"] }
-  ingress { from_port = 443 to_port = 443 protocol = "tcp" cidr_blocks = ["0.0.0.0/0"] }
-
-  # Egress anywhere (targets are in VPC)
-  egress  { from_port = 0   to_port = 0   protocol = "-1" cidr_blocks = ["0.0.0.0/0"] }
-
-  tags = merge({ Name = "${var.name}-alb-sg" }, var.tags)
+  ingress {
+    from_port = 80
+    to_port = 80
+    protocol = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+    ipv6_cidr_blocks = ["::/0"]
+  }
+  ingress {
+    from_port = 443
+    to_port = 443
+    protocol = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+    ipv6_cidr_blocks = ["::/0"]
+  }
+  # just keep egress default all
+  tags = local.tags
 }
 
 ############################################
 # Load Balancer
 ############################################
 resource "aws_lb" "this" {
-  name               = "${var.name}-alb"
+  name               = "${var.env}-alb"
   load_balancer_type = "application"
   internal           = false
   security_groups    = [aws_security_group.alb.id]
   subnets            = var.subnet_ids
   idle_timeout       = var.idle_timeout_seconds
 
-  tags = merge({ Name = "${var.name}-alb" }, var.tags)
+  tags = local.tags
 }
 
 ############################################
 # Target Group (IP targets for Fargate)
 ############################################
 resource "aws_lb_target_group" "app" {
-  name        = "${var.name}-tg"
+  name        = "${var.env}-target-group"
   vpc_id      = var.vpc_id
   port        = var.target_group_port
   protocol    = var.target_group_protocol
   target_type = "ip"
 
   health_check {
-    enabled             = true
     path                = var.health_check_path
+    matcher             = "200-399"
     healthy_threshold   = 2
     unhealthy_threshold = 2
-    interval            = 30
-    timeout             = 5
-    matcher             = "200-399"
   }
 
-  tags = merge({ Name = "${var.name}-tg" }, var.tags)
+  tags = local.tags
 }
 
 ############################################
@@ -72,6 +82,8 @@ resource "aws_lb_listener" "http" {
       status_code = "HTTP_301"
     }
   }
+
+  tags = local.tags
 }
 
 # HTTPS listener → forward to target group
@@ -86,4 +98,6 @@ resource "aws_lb_listener" "https" {
     type             = "forward"
     target_group_arn = aws_lb_target_group.app.arn
   }
+
+  tags = local.tags
 }

@@ -1,5 +1,5 @@
-variable "name" {
-  description = "ALB name/prefix (e.g., test-backend)"
+variable "env" {
+  description = "Environment name (test/prod)."
   type        = string
 }
 
@@ -9,11 +9,7 @@ variable "vpc_id" {
 }
 
 variable "subnet_ids" {
-  description = <<EOT
-List of **public** subnet IDs for the ALB.
-Application Load Balancers require at least **two subnets in different AZs**.
-(You can keep tasks in one AZ; ALB can span 2 AZs.)
-EOT
+  description = "List of public subnet IDs for the ALB. ALBs require at least two subnets in different AZs."
   type = list(string)
 }
 
@@ -37,7 +33,7 @@ variable "target_group_protocol" {
 variable "health_check_path" {
   description = "Health check path"
   type        = string
-  default     = "/healthz"
+  default     = "/health/"
 }
 
 variable "enable_http_redirect" {
@@ -50,10 +46,4 @@ variable "idle_timeout_seconds" {
   description = "ALB idle timeout"
   type        = number
   default     = 60
-}
-
-variable "tags" {
-  description = "Optional extra tags for all resources"
-  type        = map(string)
-  default     = {}
 }
