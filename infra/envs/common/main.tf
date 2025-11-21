@@ -3,7 +3,7 @@
 ######################################
 
 resource "aws_s3_bucket" "cloudtrail" {
-  bucket = "${var.env}-cloudtrail-logs"
+  bucket = "${var.env}-cloudtrail-logs-inlocon"
 }
 
 resource "aws_s3_bucket_ownership_controls" "cloudtrail" {
