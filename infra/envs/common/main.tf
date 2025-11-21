@@ -55,11 +55,6 @@ resource "aws_s3_bucket_policy" "cloudtrail" {
         }
         Action   = "s3:GetBucketAcl"
         Resource = aws_s3_bucket.cloudtrail.arn
-        Condition = {
-          StringEquals = {
-            "aws:SourceArn" = aws_cloudtrail.this.arn
-          }
-        }
       },
       {
         Sid       = "AWSCloudTrailWrite"
