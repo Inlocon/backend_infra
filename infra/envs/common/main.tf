@@ -3,7 +3,7 @@
 ######################################
 
 resource "aws_s3_bucket" "cloudtrail" {
-  bucket = "${var.env}-cloudtrail-inlocon"
+  bucket = "${var.env}-cloudtraillogs-inlocon"
 }
 
 resource "aws_s3_bucket_ownership_controls" "cloudtrail" {
@@ -72,7 +72,6 @@ resource "aws_s3_bucket_policy" "cloudtrail" {
         Condition = {
           StringEquals = {
             "s3:x-amz-acl" = "bucket-owner-full-control"
-            "aws:SourceArn" = aws_cloudtrail.this.arn
           }
         }
       }
