@@ -47,7 +47,7 @@ resource "aws_lb" "this" {
 # Target Group (IP targets for Fargate)
 ############################################
 resource "aws_lb_target_group" "app" {
-  name        = "${var.env}-target-group"
+  name        = "${var.env}-tg"
   vpc_id      = var.vpc_id
   port        = var.target_group_port
   protocol    = var.target_group_protocol
