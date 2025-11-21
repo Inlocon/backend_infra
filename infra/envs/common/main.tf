@@ -90,4 +90,6 @@ resource "aws_cloudtrail" "this" {
     read_write_type           = "All"
     include_management_events = true
   }
+
+  depends_on = [aws_s3_bucket_policy.cloudtrail]
 }
