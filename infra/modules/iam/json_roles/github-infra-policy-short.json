@@ -9,6 +9,7 @@
         "cloudtrail:*",
         "ec2:*",
         "ecr:*",
+        "ecs:*",
         "elasticloadbalancing:*",
         "iam:*",
         "rds:*",
