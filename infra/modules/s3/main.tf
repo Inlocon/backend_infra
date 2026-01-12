@@ -8,8 +8,9 @@ resource "aws_s3_bucket" "this" {
   tags   = local.tags
 }
 
-# ACL-less buckets
 resource "aws_s3_bucket_ownership_controls" "this" {
+  # causes the bucket owner to be ALWAYS the owner of uploaded objects
+  # (even if: uploaded from another account)
   bucket = aws_s3_bucket.this.id
   rule { object_ownership = "BucketOwnerEnforced" }
 }
@@ -22,7 +23,6 @@ resource "aws_s3_bucket_public_access_block" "this" {
   restrict_public_buckets = true
 }
 
-# --- Policy builder (kept separate via locals for readability) ---
 locals {
   policy_statements = concat(
     [
@@ -38,7 +38,7 @@ locals {
         Condition = { Bool = { "aws:SecureTransport" = "false" } }
       }
     ]
-    # add other statements here if necessary
+    # add more here if necessary
   )
 
   bucket_policy = {

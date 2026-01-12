@@ -50,20 +50,20 @@ resource "aws_db_parameter_group" "this" {
   tags = local.tags
 }
 
-############################################
+########################################################
 # Secrets: generate password + store in Secrets Manager
-############################################
+########################################################
 
 resource "random_password" "db" {
-  length           = 32
+  length = 32
 }
 
 resource "aws_secretsmanager_secret" "db" {
+  description = "Zugangsdaten für ${var.env}-Datenbank."
   name = local.secret_name
   tags = local.tags
 }
 
-# First version: username/password only (available before instance exists)
 resource "aws_secretsmanager_secret_version" "creds" {
   secret_id     = aws_secretsmanager_secret.db.id
   secret_string = jsonencode({
