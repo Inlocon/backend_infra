@@ -17,5 +17,5 @@ variable "image_tag_mutability" {
 variable "scan_on_push" {
   description = "Enable image scanning on push (useful for detecting security vulnerabilities)."
   type        = bool
-  default     = false
+  default     = true
 }
