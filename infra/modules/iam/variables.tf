@@ -11,11 +11,9 @@ variable "env" {
 variable "secret_name_db_credentials" {
   description = "Name of the secret from secretmanager for db credentials"
   type        = string
-  default     = "test_db_credentials"
 }
 
-variable "ec2_loader_s3_bucket_name" {
-  description = "Name of the bucket from which the ec2 loader instance fetches the dump."
+variable "bucket_name" {
+  description = "Bucket for database dumps and config files."
   type        = string
-  default     = "backend-inlocon"
 }
