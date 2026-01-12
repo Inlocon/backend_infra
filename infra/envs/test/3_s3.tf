@@ -1,4 +1,4 @@
 module "s3" {
   source            = "../../modules/s3"
-  bucket_name       = "test-backend-inlocon"
+  bucket_name       = "${var.env}-backend-inlocon"
 }

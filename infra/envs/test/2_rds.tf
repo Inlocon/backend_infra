@@ -4,8 +4,8 @@
 
 locals {
   rds_instance_class      = "db.t4g.small" # maybe .small might be enough for testing
-  rds_allocated_storage   = 60              # GB
-  rds_backup_retention    = 3               # days (test)
+  rds_allocated_storage   = 60              # GB; should be higher for production
+  rds_backup_retention    = 7               # days (test)
 }
 
 module "rds" {
@@ -13,7 +13,7 @@ module "rds" {
 
   env        = var.env
   vpc_id      = module.network.vpc_id
-  subnet_ids  = module.network.private_subnet_ids  # private subnets from network module
+  subnet_ids  = module.network.private_subnet_ids
 
   # Engine/version (module defaults to postgres 17; leave null to let AWS pick a minor)
   engine_version        = null

@@ -1,6 +1,6 @@
 module "iam" {
   source = "../../modules/iam"
   env = "test"
-  secret_name_db_credentials = "test_db_credentials"
-  ec2_loader_s3_bucket_name = "backend-inlocon"
+  secret_name_db_credentials = "${var.env}_db_credentials"
+  bucket_name = "${var.env}-backend-inlocon"
 }

@@ -1,6 +1,6 @@
 module "ecr_backend" {
   source = "../../modules/ecr"
-  name = "backend"
+  name = "webservice"
   env = var.env
 }
 
