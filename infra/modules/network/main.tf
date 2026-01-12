@@ -9,19 +9,42 @@ locals {
   private_subnets = {
     for key, cfg in var.subnet_config : key => cfg if !try(cfg.public, false)
   }
+  allowed_azs = data.aws_availability_zones.available.names
+  used_azs    = distinct([for k, v in var.subnet_config : v.az])
+  invalid_azs = [for az in local.used_azs : az if !contains(local.allowed_azs, az)]
   tags = { resourceGroup = "networking" }
 }
 
-# VPC
-  resource "aws_vpc" "this" {
-    cidr_block           = var.vpc_config.cidr_block
-    enable_dns_support   = true
-    enable_dns_hostnames = true
-
-    tags = local.tags
+check "at_least_one_public_and_private_subnet" {
+  assert {
+    condition     = length(local.public_subnets) > 0
+    error_message = "You must define at least one public subnet."
   }
+  assert {
+    condition     = length(local.private_subnets) > 0
+    error_message = "You must define at least one private subnet."
+  }
+}
 
-# Subnets
+check "azs_valid" {
+  assert {
+    condition = length(local.invalid_azs) == 0
+    error_message = <<EOT
+      Invalid AZ(s): ${join(", ", local.invalid_azs)}
+      Used: ${join(", ", local.used_azs)}
+      Allowed: ${join(", ", local.allowed_azs)}
+      EOT
+  }
+}
+
+resource "aws_vpc" "this" {
+  cidr_block           = var.vpc_config.cidr_block
+  enable_dns_support   = true
+  enable_dns_hostnames = true
+
+  tags = local.tags
+}
+
 resource "aws_subnet" "this" {
   for_each                = var.subnet_config
   vpc_id                  = aws_vpc.this.id
@@ -29,60 +52,39 @@ resource "aws_subnet" "this" {
   cidr_block              = each.value.cidr_block
   map_public_ip_on_launch = try(each.value.public, false)
 
-  tags = merge({
-    Name   = each.key
-    Access = try(each.value.public, false) ? "Public" : "Private"
-  }, local.tags)
-
-  lifecycle {
-    precondition {
-      condition     = contains(data.aws_availability_zones.available.names, each.value.az)
-      error_message = "Invalid AZ ${each.value.az}. Allowed: ${join(", ", data.aws_availability_zones.available.names)}"
-    }
-  }
+  tags = merge({name = each.key}, local.tags)
 }
 
-# Internet Gateway only if at least one public subnet exists
 resource "aws_internet_gateway" "this" {
-  count  = length(local.public_subnets) > 0 ? 1 : 0
   vpc_id = aws_vpc.this.id
-
   tags = local.tags
 }
 
-# Route table for public subnets (0.0.0.0/0 -> IGW)
 resource "aws_route_table" "public" {
-  count  = length(local.public_subnets) > 0 ? 1 : 0
   vpc_id = aws_vpc.this.id
-
   tags = local.tags
 }
 
 resource "aws_route" "public_default" {
-  count                  = length(local.public_subnets) > 0 ? 1 : 0
-  route_table_id         = aws_route_table.public[0].id
+  route_table_id         = aws_route_table.public.id
   destination_cidr_block = "0.0.0.0/0"
-  gateway_id             = aws_internet_gateway.this[0].id
+  gateway_id             = aws_internet_gateway.this.id
 }
 
 resource "aws_route_table_association" "public_assoc" {
   for_each = local.public_subnets
 
   subnet_id      = aws_subnet.this[each.key].id
-  route_table_id = aws_route_table.public[0].id
+  route_table_id = aws_route_table.public.id
 }
 
-# Private route table (no NAT; internal only)
 resource "aws_route_table" "private" {
-  count  = length(local.private_subnets) > 0 ? 1 : 0
   vpc_id = aws_vpc.this.id
-
   tags = local.tags
 }
 
 resource "aws_route_table_association" "private_assoc" {
   for_each = local.private_subnets
-
   subnet_id      = aws_subnet.this[each.key].id
   route_table_id = aws_route_table.private[0].id
 }

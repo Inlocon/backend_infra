@@ -36,5 +36,6 @@ EOT
     condition     = alltrue([for c in values(var.subnet_config) : can(cidrnetmask(c.cidr_block))])
     error_message = "Every subnet_config.cidr_block must be a valid CIDR."
   }
+  # adding a validation, that each subnet is valid in the VPC would be nice as well
 }
 
