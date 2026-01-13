@@ -49,10 +49,10 @@ output "private_subnet_ids" {
 
 output "public_route_table_id" {
   description = "The public route table id."
-  value       = aws_route_table.public[0].id
+  value       = aws_route_table.public.id
 }
 
 output "private_route_table_id" {
   description = "The private route table id."
-  value       = aws_route_table.private[0].id
+  value       = aws_route_table.private.id
 }

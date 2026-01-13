@@ -86,5 +86,5 @@ resource "aws_route_table" "private" {
 resource "aws_route_table_association" "private_assoc" {
   for_each = local.private_subnets
   subnet_id      = aws_subnet.this[each.key].id
-  route_table_id = aws_route_table.private[0].id
+  route_table_id = aws_route_table.private.id
 }
