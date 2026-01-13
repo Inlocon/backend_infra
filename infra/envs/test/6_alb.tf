@@ -1,14 +1,12 @@
 locals {
   domain_name = "${var.env == "test" ? "dev" : "prod"}.backend.inlocon.de"
+  certificate_arn = data.aws_acm_certificate.this.arn
 }
 
-resource "aws_acm_certificate" "this" {
-  domain_name               = local.domain_name
-  validation_method         = "DNS"
-
-  lifecycle {
-    create_before_destroy = true
-  }
+data "aws_acm_certificate" "this" {
+  domain   = local.domain_name
+  statuses = ["ISSUED"]
+  most_recent = true # if several certificates for that domain exist, return the most_recent
 }
 
 module "alb" {
@@ -16,7 +14,7 @@ module "alb" {
   env = var.env
   vpc_id = module.network.vpc_id
   subnet_ids = module.network.public_subnet_ids
-  certificate_arn = aws_acm_certificate.this.arn
+  certificate_arn = local.certificate_arn
   # set this guy to false when certificate has not been validated yet
   enable_http_redirect = true
   # set by default
