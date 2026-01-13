@@ -5,7 +5,7 @@ on:
     branches: [ "main" ]
     paths:
       - 'infra/envs/prod/**'
-      - 'infra/modules/**'
+#      - 'infra/modules/**' -> trigger separately via versions variable or something similar
       - '.github/workflows/infra-prod.yml'
 
 permissions:
