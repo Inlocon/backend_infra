@@ -80,10 +80,16 @@ data "aws_iam_policy_document" "ec2_loader" {
   }
 }
 
-resource "aws_iam_role_policy" "ec2_loader" {
+resource "aws_iam_policy" "ec2_loader" {
+  name   = "${var.env}-ec2-loader"
   policy = data.aws_iam_policy_document.ec2_loader.json
-  role   = aws_iam_role.ec2_loader.name
 }
+
+resource "aws_iam_role_policy_attachment" "ec2_loader" {
+  role       = aws_iam_role.ec2_loader.name
+  policy_arn = aws_iam_policy.ec2_loader.arn
+}
+
 
 ########################
 # webbservice execution
