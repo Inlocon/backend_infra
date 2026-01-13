@@ -155,6 +155,10 @@ resource "aws_iam_policy" "webservice_task" {
   tags = local.tags.webservice
 }
 
+resource "aws_iam_role_policy_attachment" "webservice_task" {
+  role = aws_iam_role.webservice_task.name
+  policy_arn = aws_iam_policy.webservice_task.arn
+}
 
 
 
