@@ -95,11 +95,6 @@ resource "aws_iam_role_policy_attachment" "ec2_loader" {
 # webbservice execution
 ########################
 
-resource "aws_iam_role_policy_attachment" "webservice_execution" {
-  role       = aws_iam_role.webservice_execution.name
-  policy_arn = "arn:aws:iam::aws:policy/service-role/AmazonECSTaskExecutionRolePolicy"
-}
-
 data "aws_iam_policy_document" "webservice_execution" {
   statement {
     actions = ["s3:GetBucketLocation", "s3:GetObject"]
@@ -107,11 +102,20 @@ data "aws_iam_policy_document" "webservice_execution" {
   }
 }
 
-resource "aws_iam_role_policy" "webservice_execution" {
+resource "aws_iam_policy" "webservice_execution" {
+  name   = "${var.env}-webservice-execution"
   policy = data.aws_iam_policy_document.webservice_execution.json
-  role   = aws_iam_role.webservice_execution.name
 }
 
+resource "aws_iam_role_policy_attachment" "webservice_execution_managed_task_execution_role" {
+  role       = aws_iam_role.webservice_execution.name
+  policy_arn = "arn:aws:iam::aws:policy/service-role/AmazonECSTaskExecutionRolePolicy"
+}
+
+resource "aws_iam_role_policy_attachment" "webservice_execution_custom_role" {
+  role       = aws_iam_role.webservice_execution.name
+  policy_arn = aws_iam_policy.webservice_execution.arn
+}
 
 ##################
 # webservice task
