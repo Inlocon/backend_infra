@@ -83,6 +83,7 @@ data "aws_iam_policy_document" "ec2_loader" {
 resource "aws_iam_policy" "ec2_loader" {
   name   = "${var.env}-ec2-loader"
   policy = data.aws_iam_policy_document.ec2_loader.json
+  tags = local.tags.ec2loader
 }
 
 resource "aws_iam_role_policy_attachment" "ec2_loader" {
@@ -103,8 +104,9 @@ data "aws_iam_policy_document" "webservice_execution" {
 }
 
 resource "aws_iam_policy" "webservice_execution" {
-  name   = "${var.env}-webservice-execution"
+  name = "${var.env}-webservice-execution"
   policy = data.aws_iam_policy_document.webservice_execution.json
+  tags = local.tags.webservice
 }
 
 resource "aws_iam_role_policy_attachment" "webservice_execution_managed_task_execution_role" {
@@ -147,9 +149,10 @@ data "aws_iam_policy_document" "webservice_task" {
   }
 }
 
-resource "aws_iam_role_policy" "webservice_task" {
+resource "aws_iam_policy" "webservice_task" {
+  name = "${var.env}-webservice-task"
   policy = data.aws_iam_policy_document.webservice_task.json
-  role   = aws_iam_role.webservice_task.name
+  tags = local.tags.webservice
 }
 
 
