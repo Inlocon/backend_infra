@@ -1,5 +1,5 @@
 locals {
-  tags = {resourceGroup = "${var.env}_s3"}
+  tags = {resourceGroup = "${var.env}-s3"}
 }
 
 resource "aws_s3_bucket" "this" {
@@ -23,31 +23,22 @@ resource "aws_s3_bucket_public_access_block" "this" {
   restrict_public_buckets = true
 }
 
-locals {
-  policy_statements = concat(
-    [
-      {
-        Sid      = "DenyInsecureTransport"
-        Effect   = "Deny"
-        Principal = "*"
-        Action   = "s3:*"
-        Resource = [
-          aws_s3_bucket.this.arn,
-          "${aws_s3_bucket.this.arn}/*"
-        ]
-        Condition = { Bool = { "aws:SecureTransport" = "false" } }
-      }
-    ]
-    # add more here if necessary
-  )
+data "aws_iam_policy_document" "bucket" {
+  statement {
+    sid    = "DenyInsecureTransport"
+    effect = "Deny"
+    actions = ["s3:*"]
+    resources = [aws_s3_bucket.this.arn,"${aws_s3_bucket.this.arn}/*",]
 
-  bucket_policy = {
-    Version   = "2012-10-17"
-    Statement = local.policy_statements
+    condition {
+      test     = "Bool"
+      variable = "aws:SecureTransport"
+      values   = ["false"]
+    }
   }
 }
 
 resource "aws_s3_bucket_policy" "this" {
   bucket = aws_s3_bucket.this.id
-  policy = jsonencode(local.bucket_policy)
+  policy = data.aws_iam_policy_document.bucket.json
 }
