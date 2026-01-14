@@ -8,3 +8,9 @@ aws iam put-role-policy \
   --role-name github-infra \
   --policy-name github-infra-permissions \
   --policy-document file://json_roles/github-infra-policy-short.json
+
+
+aws iam put-role-policy \
+  --role-name role_name \
+  --policy-name policy_name \
+  --policy-document local_file_path
