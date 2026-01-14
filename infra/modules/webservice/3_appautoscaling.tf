@@ -1,7 +1,3 @@
-###########################
-# Application Auto Scaling
-###########################
-
 resource "aws_appautoscaling_target" "ecs" {
   min_capacity       = var.autoscaling_min
   max_capacity       = var.autoscaling_max

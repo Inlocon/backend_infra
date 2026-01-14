@@ -12,15 +12,14 @@ resource "aws_ecs_task_definition" "this" {
   cpu                      = var.cpu
   memory                   = var.memory
 
-  # from iam.tf
-  execution_role_arn = aws_iam_role.execution.arn
-  task_role_arn      = aws_iam_role.task.arn
+  execution_role_arn = var.webservice_execution_role_arn
+  task_role_arn      = var.webservice_task_role_arn
 
   container_definitions = jsonencode([
     {
       name        = var.container_name
       image       = var.container_image
-      essential   = true
+      essential   = true # -> on container crash -> ecs serivce starts new instance of the task
 
       portMappings = [{
         containerPort = var.container_port

@@ -1,12 +1,10 @@
-output "role_name_ec2_loader" {
-  description = "Name of the role attached to the EC2 loader."
-  value       = aws_iam_role.ec2_loader.name
-}
+output "ec2_loader_role_arn" { value = aws_iam_role.ec2_loader.arn }
+output "ec2_loader_role_name" { value = aws_iam_role.ec2_loader.name }
 
-output "role_name_webservice_execution" {
-  value       = aws_iam_role.webservice_execution.name
-}
+output "webservice_execution_role_arn" { value = aws_iam_role.webservice_execution.arn }
+output "webservice_execution_role_name" { value = aws_iam_role.webservice_execution.name }
 
-output "role_name_webservice_task" {
-  value       = aws_iam_role.webservice_task.name
-}
+output "webservice_task_role_arn" { value = aws_iam_role.webservice_task.arn }
+output "webservice_task_role_name" { value = aws_iam_role.webservice_task.name }
+
+

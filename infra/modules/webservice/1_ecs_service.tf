@@ -3,7 +3,7 @@ resource "aws_ecs_service" "this" {
   cluster         = var.cluster_name
   launch_type     = "FARGATE"
   platform_version = "LATEST"
-  desired_count   = var.desired_count
+  desired_count   = var.desired_count # initial value of number of tasks, later handled by autoscaling
 
   network_configuration {
     subnets         = var.subnet_ids

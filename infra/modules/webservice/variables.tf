@@ -1,6 +1,6 @@
-####################
-# identity & basics
-####################
+#####################
+# descriptive labels
+#####################
 variable "name" {
   description = "Service name/prefix (e.g. webservice)"
   type        = string
@@ -18,9 +18,22 @@ variable "tags" {
   default     = {resourceGroup = var.name}
 }
 
-############################################
-# Networking (public tasks, single-AZ OK)
-############################################
+######
+# IAM
+######
+
+variable "webservice_execution_role_arn" {
+  type        = string
+}
+
+variable "webservice_task_role_arn" {
+  type        = string
+}
+
+
+##########################################
+# networking (public tasks, single-AZ OK)
+##########################################
 variable "vpc_id" {
   description = "VPC where tasks run"
   type        = string
@@ -42,9 +55,9 @@ variable "cluster_name" {
   type        = string
 }
 
-############################################
-# Container image & runtime
-############################################
+############
+# Container
+############
 variable "container_image" {
   description = "Image URI (e.g., ECR repo:tag)"
   type        = string
@@ -53,7 +66,7 @@ variable "container_image" {
 variable "container_name" {
   description = "Container name for task definition"
   type        = string
-  default     = "web"
+  default     = "webservice"
 }
 
 variable "container_port" {
@@ -63,7 +76,7 @@ variable "container_port" {
 }
 
 variable "cpu" {
-  description = "Task CPU units (e.g., 256, 512, 1024)"
+  description = "Task CPU units (e.g., 256, 512, 1024; 1 vCPU = 1024)"
   type        = number
   default     = 512
 }
@@ -84,9 +97,9 @@ variable "env_s3_bucket_key" {
   type        = string
 }
 
-############################
-# Load balancer integration
-############################
+################
+# Load balancer
+################
 variable "target_group_arn" {
   description = "Service registers this container/port with the ALB target group"
   type        = string
@@ -120,9 +133,9 @@ variable "cpu_target_percent" {
   default     = 60
 }
 
-############################################
-# IAM & logs
-############################################
+#######
+# logs
+#######
 
 variable "log_group_name" {
   description = "Use a specific log group name"
