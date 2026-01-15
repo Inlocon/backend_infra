@@ -2,7 +2,6 @@ locals {
   tags = { resourceGroup = "webservice" }
 }
 
-
 resource "aws_ecs_cluster" "this" {
   name = "${var.env}-backend-cluster"
 }
@@ -37,7 +36,7 @@ module "webservice" {
   cpu                = 512
   memory             = 1024
   env_s3_bucket_name = module.s3.bucket_name
-  env_s3_bucket_key  = "prod.env"
+  env_s3_bucket_key  = "${var.env}.webservice.env"
 
 
   # load balancer integration
