@@ -14,7 +14,7 @@ resource "aws_cloudwatch_log_group" "webservice" {
 }
 
 module "webservice" {
-  source = "../../modules/webservice"
+  source = "../../modules/7_webservice"
 
   # descriptive labels
   name = "webservice"

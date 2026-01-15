@@ -10,7 +10,7 @@ data "aws_acm_certificate" "this" {
 }
 
 module "alb" {
-  source          = "../../modules/alb"
+  source          = "../../modules/6_alb"
   env             = var.env
   vpc_id          = module.network.vpc_id
   subnet_ids      = module.network.public_subnet_ids

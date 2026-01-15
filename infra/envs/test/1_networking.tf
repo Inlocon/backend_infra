@@ -12,7 +12,7 @@ locals {
 }
 
 module "network" {
-  source = "../../modules/network"
+  source = "../../modules/1_network"
 
   vpc_config = {
     name       = "${var.env}-vpc"

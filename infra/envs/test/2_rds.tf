@@ -9,7 +9,7 @@ locals {
 }
 
 module "rds" {
-  source = "../../modules/rds"
+  source = "../../modules/2_rds"
 
   env        = var.env
   vpc_id     = module.network.vpc_id
