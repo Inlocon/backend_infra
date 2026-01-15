@@ -1,4 +1,4 @@
-module "ecr_backend" {
+module "webservice_ecr_repo" {
   source = "../../modules/ecr"
   name = "webservice"
   env = var.env
