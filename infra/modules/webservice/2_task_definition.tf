@@ -1,6 +1,6 @@
 resource "aws_security_group" "tasks" {
   name        = "${var.env}-${var.name}-tasks"
-  description = "SG for ECS tasks"
+  description = "SG for ${var.name} tasks"
   vpc_id      = var.vpc_id
   tags = var.tags
 }
