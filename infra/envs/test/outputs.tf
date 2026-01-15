@@ -13,5 +13,5 @@ output "private_subnet_ids" { value = module.network.private_subnet_ids }
 ########
 # 2_RDS
 ########
-output "db_endpoint"  { value = module.rds.db_endpoint }
-output "db_port"      { value = module.rds.db_port }
+output "db_endpoint" { value = module.rds.db_endpoint }
+output "db_port" { value = module.rds.db_port }

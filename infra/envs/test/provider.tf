@@ -1,6 +1,6 @@
 locals {
   default_tags = {
-    env        = var.env
+    env       = var.env
     managedBy = "terraform"
   }
 }
