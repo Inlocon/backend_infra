@@ -1,14 +1,13 @@
 locals {
-  tags = {
-    resourceGroup = "webservice"
-  }
+  tags = { resourceGroup = "webservice" }
 }
+
 
 resource "aws_ecs_cluster" "this" {
   name = "${var.env}-backend-cluster"
 }
 
-resource "aws_cloudwatch_log_group" "this" {
+resource "aws_cloudwatch_log_group" "webservice" {
   name              = "/${var.env}/ecs/webservice"
   retention_in_days = 30
   tags              = local.tags
@@ -51,7 +50,7 @@ module "webservice" {
   cpu_target_percent = 60
 
   #logs
-  log_group_name = aws_cloudwatch_log_group.this.name
+  log_group_name = aws_cloudwatch_log_group.webservice.name
 
   tags = local.tags
 }
