@@ -1,5 +1,5 @@
 locals {
-  tags = { resourceGroup = "ec2_loader"}
+  tags = { resourceGroup = "ec2_loader" }
 }
 
 resource "aws_security_group" "this" {
@@ -23,8 +23,8 @@ data "aws_subnet" "this" {
 }
 
 resource "aws_iam_instance_profile" "this" {
-  name  = "${var.env}-${var.name}-profile"
-  role  = var.iam_role_name
+  name = "${var.env}-${var.name}-profile"
+  role = var.iam_role_name
 }
 
 resource "aws_instance" "this" {
@@ -32,7 +32,7 @@ resource "aws_instance" "this" {
   instance_type          = var.instance_type
   subnet_id              = var.subnet_id
   vpc_security_group_ids = [aws_security_group.this.id]
-  iam_instance_profile = aws_iam_instance_profile.this.name
+  iam_instance_profile   = aws_iam_instance_profile.this.name
 
   metadata_options {
     http_tokens = "optional"
@@ -45,5 +45,5 @@ resource "aws_instance" "this" {
     delete_on_termination = true
   }
 
-  tags = local.tags
+  tags = merge(local.tags, {Name = "${var.env}-${var.name}"})
 }

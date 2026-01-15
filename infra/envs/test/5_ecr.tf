@@ -4,4 +4,8 @@ module "webservice_ecr_repo" {
   env    = var.env
 }
 
-# add repo for sync container later
+module "dbsync_ecr_repo" {
+  source = "../../modules/ecr"
+  name   = "dbsync"
+  env    = var.env
+}
