@@ -15,7 +15,7 @@ variable "env" {
 variable "tags" {
   description = "tags"
   type        = map(string)
-  default     = {resourceGroup = var.name}
+  default     = {resourceGroup = "webservice"}
 }
 
 ######
