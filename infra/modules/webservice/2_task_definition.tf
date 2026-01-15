@@ -3,6 +3,10 @@ resource "aws_security_group" "tasks" {
   description = "SG for ${var.name} tasks"
   vpc_id      = var.vpc_id
   tags = var.tags
+
+  lifecycle {
+    ignore_changes = [description]
+  }
 }
 
 resource "aws_ecs_task_definition" "this" {
