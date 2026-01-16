@@ -1,6 +1,6 @@
 module "ec2_loader" {
   source        = "../../modules/4_ec2_loader"
-  ami_id        = "ami-0b62bf86b1a283f42"
+  ami_id        = "ami-09361b64d009bc090"
   env           = var.env
   iam_role_name = module.iam.ec2_loader_role_name # "ec2-migration"
   instance_type = "t2.micro"
