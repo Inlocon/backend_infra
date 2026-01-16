@@ -85,7 +85,10 @@ data "aws_iam_policy_document" "ec2_loader" {
   }
   statement {
     actions = ["secretsmanager:GetSecretValue"]
-    resources = ["arn:aws:secretsmanager:eu-central-1:${local.account_id}:secret:${var.secret_name_db_credentials}*"]
+    resources = [
+      "arn:aws:secretsmanager:eu-central-1:${local.account_id}:secret:${var.secret_name_db_credentials}*",
+      "arn:aws:secretsmanager:eu-central-1:${local.account_id}:secret:inlocontest_credentials*", # old smoketest db secret
+    ]
   }
   statement {
     actions = ["rds:DescribeDBInstances"]
