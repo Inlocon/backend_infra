@@ -15,6 +15,10 @@ resource "aws_security_group" "this" {
     ipv6_cidr_blocks = ["::/0"]
   }
 
+  lifecycle {
+    ignore_changes = [description]
+  }
+
   tags = local.tags
 }
 

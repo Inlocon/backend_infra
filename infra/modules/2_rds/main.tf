@@ -4,7 +4,6 @@
 
 locals {
   family        = "postgres${var.engine_major}"
-  secret_name   = coalesce(var.secret_name, "${var.env}_db_credentials")
   username_safe = var.username
   tags = {resourceGroup = "${var.env}-db"}
 }
@@ -61,7 +60,7 @@ resource "random_password" "db" {
 
 resource "aws_secretsmanager_secret" "db" {
   description = "Zugangsdaten für ${var.env}-Datenbank."
-  name = local.secret_name
+  name = var.secret_name_db_credentials
   tags = local.tags
 }
 

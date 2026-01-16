@@ -14,6 +14,7 @@ module "rds" {
   env        = var.env
   vpc_id     = module.network.vpc_id
   subnet_ids = module.network.private_subnet_ids
+  secret_name_db_credentials = local.secret_name_db_credentials
 
   # Engine/version (module defaults to postgres 17; leave null to let AWS pick a minor)
   engine_version        = null

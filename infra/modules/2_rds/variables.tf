@@ -89,8 +89,8 @@ variable "create_random_password" {
   default     = true
 }
 
-variable "secret_name" {
-  description = "Optional Secrets Manager name (if null, module will choose a sensible default)"
+variable "secret_name_db_credentials" {
+  description = "Secrets Manager name"
   type        = string
   default     = null
 }

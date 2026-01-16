@@ -13,7 +13,6 @@ output "db_sg_id" {
   value       = aws_security_group.db_.id
 }
 
-
 output "secret_arn" {
   description = "Secrets Manager secret ARN holding DB credentials/connection"
   value       = aws_secretsmanager_secret.db.arn

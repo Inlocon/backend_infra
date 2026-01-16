@@ -1,5 +1,5 @@
 locals {
-  tags = { resourceGroup = "webservice" }
+  webservicetags = { resourceGroup = "webservice" }
 }
 
 resource "aws_ecs_cluster" "this" {
@@ -9,7 +9,7 @@ resource "aws_ecs_cluster" "this" {
 resource "aws_cloudwatch_log_group" "webservice" {
   name              = "/${var.env}/ecs/webservice"
   retention_in_days = 30
-  tags              = local.tags
+  tags              = local.webservicetags
 }
 
 module "webservice" {
@@ -51,7 +51,7 @@ module "webservice" {
   #logs
   log_group_name = aws_cloudwatch_log_group.webservice.name
 
-  tags = local.tags
+  tags = local.webservicetags
 }
 
 resource "aws_security_group_rule" "alb_to_tasks" {
