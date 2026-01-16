@@ -6,7 +6,7 @@ locals {
   family        = "postgres${var.engine_major}"
   secret_name   = coalesce(var.secret_name, "${var.env}_db_credentials")
   username_safe = var.username
-  tags = {resourceGroup = "${var.env}_db"}
+  tags = {resourceGroup = "${var.env}-db"}
 }
 
 ############################################
@@ -17,14 +17,6 @@ locals {
 resource "aws_db_subnet_group" "this" {
   name       = "${var.env}_db_subnet_grp"
   subnet_ids = var.subnet_ids
-  tags = local.tags
-}
-
-# sg attached to the db
-resource "aws_security_group" "db" {
-  name        = "${var.env}_db_sg"
-  description = "DB SG (${var.env})"
-  vpc_id      = var.vpc_id
   tags = local.tags
 }
 
@@ -91,7 +83,7 @@ resource "aws_db_instance" "this" {
   engine_version          = var.engine_version
   instance_class          = var.instance_class
   db_subnet_group_name    = aws_db_subnet_group.this.name
-  vpc_security_group_ids  = [aws_security_group.db.id, aws_security_group.db_.id]
+  vpc_security_group_ids  = [aws_security_group.db_.id]
   allocated_storage       = var.allocated_storage
   storage_type            = var.storage_type
   storage_encrypted       = true
