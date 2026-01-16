@@ -52,7 +52,7 @@ resource "aws_subnet" "this" {
   cidr_block              = each.value.cidr_block
   map_public_ip_on_launch = try(each.value.public, false)
 
-  tags = merge({name = each.key}, local.tags)
+  tags = merge({Name = each.key}, local.tags)
 }
 
 resource "aws_internet_gateway" "this" {
