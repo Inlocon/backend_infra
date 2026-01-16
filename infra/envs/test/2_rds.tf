@@ -28,7 +28,33 @@ module "rds" {
 
 }
 
+######
+# OLD
+######
+
 resource "aws_security_group_rule" "db_access_from_ec2" {
+  type                     = "ingress"
+  security_group_id        = module.rds.db_sg_old_id
+  protocol                 = "tcp"
+  from_port                = 5432
+  to_port                  = 5432
+  source_security_group_id = module.ec2_loader.security_group_id
+}
+
+resource "aws_security_group_rule" "db_access_from_webservice" {
+  type                     = "ingress"
+  security_group_id        = module.rds.db_sg_old_id
+  protocol                 = "tcp"
+  from_port                = 5432
+  to_port                  = 5432
+  source_security_group_id = module.webservice.task_sg_id
+}
+
+######
+# NEW
+######
+
+resource "aws_security_group_rule" "db_from_ec2" {
   type                     = "ingress"
   security_group_id        = module.rds.db_sg_id
   protocol                 = "tcp"
@@ -37,7 +63,7 @@ resource "aws_security_group_rule" "db_access_from_ec2" {
   source_security_group_id = module.ec2_loader.security_group_id
 }
 
-resource "aws_security_group_rule" "db_access_from_webservice" {
+resource "aws_security_group_rule" "db_from_webservice" {
   type                     = "ingress"
   security_group_id        = module.rds.db_sg_id
   protocol                 = "tcp"
