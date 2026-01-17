@@ -106,15 +106,15 @@ resource "aws_db_instance" "this" {
 }
 
 # Second secret version: add connection details after instance exists
-# resource "aws_secretsmanager_secret_version" "connection" {
-#   secret_id     = aws_secretsmanager_secret.db.id
-#   secret_string = jsonencode({
-#     engine   = var.engine
-#     host     = aws_db_instance.this.address
-#     port     = var.port
-#     dbname   = "${var.env}_db"
-#     username = var.username
-#     password = random_password.db.result
-#   })
-#   depends_on = [aws_db_instance.this]
-# }
+resource "aws_secretsmanager_secret_version" "connection" {
+  secret_id     = aws_secretsmanager_secret.db.id
+  secret_string = jsonencode({
+    engine   = var.engine
+    host     = aws_db_instance.this.address
+    port     = var.port
+    dbname   = "inlocon${var.env}"
+    username = var.username
+    password = random_password.db.result
+  })
+  depends_on = [aws_db_instance.this]
+}
