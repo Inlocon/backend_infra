@@ -3,9 +3,8 @@
 ################
 
 locals {
-  engine_major = split(".", var.engine_version)[0]
-  family        = "postgres${local.engine_major}"
-  username_safe = var.username
+  # engine_major = split(".", var.engine_version)[0]
+  family        = "postgres17"
   tags = {resourceGroup = "${var.env}-db"}
 }
 
@@ -68,7 +67,7 @@ resource "aws_secretsmanager_secret" "db" {
 resource "aws_secretsmanager_secret_version" "creds" {
   secret_id     = aws_secretsmanager_secret.db.id
   secret_string = jsonencode({
-    username = local.username_safe
+    username = var.username
     password = random_password.db.result
   })
 }
@@ -78,6 +77,7 @@ resource "aws_secretsmanager_secret_version" "creds" {
 ############################################
 
 resource "aws_db_instance" "this" {
+  snapshot_identifier     = "rds:inlocontest-2026-01-17-00-05"
   identifier              = "${var.env}-db"
   engine                  = var.engine
   engine_version          = var.engine_version
@@ -88,10 +88,10 @@ resource "aws_db_instance" "this" {
   storage_type            = var.storage_type
   storage_encrypted       = true
 
-  db_name                 = "${var.env}_db"
-  username                = local.username_safe
-  password                = random_password.db.result
-  port                    = var.port
+#   db_name                 = "inlocon${var.env}"
+#   username                = var.username
+#   password                = random_password.db.result
+#   port                    = var.port
 
   publicly_accessible     = var.publicly_accessible
   multi_az                = false
@@ -106,15 +106,15 @@ resource "aws_db_instance" "this" {
 }
 
 # Second secret version: add connection details after instance exists
-resource "aws_secretsmanager_secret_version" "connection" {
-  secret_id     = aws_secretsmanager_secret.db.id
-  secret_string = jsonencode({
-    engine   = var.engine
-    host     = aws_db_instance.this.address
-    port     = var.port
-    dbname   = "${var.env}_db"
-    username = local.username_safe
-    password = random_password.db.result
-  })
-  depends_on = [aws_db_instance.this]
-}
+# resource "aws_secretsmanager_secret_version" "connection" {
+#   secret_id     = aws_secretsmanager_secret.db.id
+#   secret_string = jsonencode({
+#     engine   = var.engine
+#     host     = aws_db_instance.this.address
+#     port     = var.port
+#     dbname   = "${var.env}_db"
+#     username = var.username
+#     password = random_password.db.result
+#   })
+#   depends_on = [aws_db_instance.this]
+# }
