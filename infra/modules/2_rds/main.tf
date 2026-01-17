@@ -3,7 +3,8 @@
 ################
 
 locals {
-  family        = "postgres${var.engine_major}"
+  engine_major = split(".", var.engine_version)[0]
+  family        = "postgres${local.engine_major}"
   username_safe = var.username
   tags = {resourceGroup = "${var.env}-db"}
 }

@@ -1,7 +1,6 @@
 variable "env" {
   description = "test/prod"
   type        = string
-  default = "test"
 }
 
 variable "vpc_id" {
@@ -20,14 +19,8 @@ variable "engine" {
   default     = "postgres"
 }
 
-variable "engine_major" {
-  description = "Engine major version for parameter group family (e.g., 17). Leave default unless you need older."
-  type        = number
-  default     = 17
-}
-
 variable "engine_version" {
-  description = "Exact engine version (optional). If null, AWS picks a current default."
+  description = "Exact engine version (optional, e.g.: 15.4). If null, AWS picks a current default."
   type        = string
   default     = null
 }
