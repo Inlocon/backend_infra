@@ -1,12 +1,6 @@
-################################
-# Postgres, single-AZ, private
-################################
-
-locals {
-  rds_instance_class    = "db.t4g.small" # maybe .small might be enough for testing
-  rds_allocated_storage = 60             # GB; should be higher for production
-  rds_backup_retention  = 7              # days (test)
-}
+# ################################
+# # Postgres, single-AZ, private
+# ################################
 
 module "rds" {
   source = "../../modules/2_rds"
@@ -16,13 +10,12 @@ module "rds" {
   subnet_ids = module.network.private_subnet_ids
   secret_name_db_credentials = local.secret_name_db_credentials
 
-  # Engine/version (module defaults to postgres 17; leave null to let AWS pick a minor)
-  engine_version        = null
-  instance_class        = local.rds_instance_class
-  allocated_storage     = local.rds_allocated_storage
-  backup_retention_days = local.rds_backup_retention
+  engine                = "postgres"
+  engine_version        = null # aws picks default, currently 17
+  instance_class        = "db.t4g.small"
+  allocated_storage     = 60
+  backup_retention_days = 7
 
-  # Private, single-AZ, sane defaults for test
   publicly_accessible = false
   deletion_protection = false
   apply_immediately   = true
