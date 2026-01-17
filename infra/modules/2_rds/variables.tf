@@ -76,12 +76,6 @@ variable "apply_immediately" {
   default     = true
 }
 
-variable "create_random_password" {
-  description = "If true, generate a random password and store in Secrets Manager"
-  type        = bool
-  default     = true
-}
-
 variable "secret_name_db_credentials" {
   description = "Secrets Manager name"
   type        = string
