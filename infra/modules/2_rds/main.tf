@@ -77,7 +77,7 @@ resource "aws_secretsmanager_secret_version" "creds" {
 ############################################
 
 resource "aws_db_instance" "this" {
-  snapshot_identifier     = "rds:inlocontest-2026-01-17-00-05"
+  # snapshot_identifier     = "rds:inlocontest-2026-01-17-00-05"
   identifier              = "${var.env}-db"
   engine                  = var.engine
   engine_version          = var.engine_version
@@ -88,10 +88,10 @@ resource "aws_db_instance" "this" {
   storage_type            = var.storage_type
   storage_encrypted       = true
 
-#   db_name                 = "inlocon${var.env}"
-#   username                = var.username
-#   password                = random_password.db.result
-#   port                    = var.port
+  db_name                 = "inlocon${var.env}"
+  username                = var.username
+  password                = random_password.db.result
+  port                    = var.port
 
   publicly_accessible     = var.publicly_accessible
   multi_az                = false
