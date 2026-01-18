@@ -186,6 +186,37 @@ resource "aws_iam_role_policy_attachment" "webservice_task" {
   policy_arn = aws_iam_policy.webservice_task.arn
 }
 
+##################
+# dbsync task
+##################
+
+data "aws_iam_policy_document" "webservice_task" {
+  # TODO: check, whether the s3 permissions are really necessary
+  # (env files are fetched by the execution role)
+#   statement {
+#     actions = ["s3:GetObject"]
+#     resources = ["arn:aws:s3:::${var.bucket_name}/*"]
+#   }
+#   statement {
+#     actions = ["s3:GetBucketLocation"]
+#     resources = ["arn:aws:s3:::${var.bucket_name}"]
+#   }
+  statement {
+    actions = ["secretsmanager:DescribeSecret", "secretsmanager:GetSecretValue"]
+    resources = ["arn:aws:secretsmanager:eu-central-1:${local.account_id}:secret:${var.secret_name_db_credentials}*",
+    "arn:aws:secretsmanager:eu-central-1:${local.account_id}:secret:apiKey_fuer_DB_Synchro*"]
+  }
+  statement {
+    actions = [
+      "ssmmessages:CreateControlChannel",
+      "ssmmessages:CreateDataChannel",
+      "ssmmessages:OpenControlChannel",
+      "ssmmessages:OpenDataChannel"
+    ]
+    resources = ["*"]
+  }
+}
+
 # just give the dbsync the same rights for now - will be deleted in a few month anway ...
 resource "aws_iam_role_policy_attachment" "dbsync_task" {
   role = aws_iam_role.dbsync_task.name
