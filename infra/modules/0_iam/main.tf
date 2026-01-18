@@ -190,7 +190,7 @@ resource "aws_iam_role_policy_attachment" "webservice_task" {
 # dbsync task
 ##################
 
-data "aws_iam_policy_document" "webservice_task" {
+data "aws_iam_policy_document" "dbsync_task" {
   # TODO: check, whether the s3 permissions are really necessary
   # (env files are fetched by the execution role)
 #   statement {
@@ -217,10 +217,15 @@ data "aws_iam_policy_document" "webservice_task" {
   }
 }
 
-# just give the dbsync the same rights for now - will be deleted in a few month anway ...
+resource "aws_iam_policy" "dbsync_task" {
+  name = "${var.env}-dbsync-task"
+  policy = data.aws_iam_policy_document.dbsync_task.json
+  tags = local.tags.dbsync
+}
+
 resource "aws_iam_role_policy_attachment" "dbsync_task" {
   role = aws_iam_role.dbsync_task.name
-  policy_arn = aws_iam_policy.webservice_task.arn
+  policy_arn = aws_iam_policy.dbsync_task.arn
 }
 
 
