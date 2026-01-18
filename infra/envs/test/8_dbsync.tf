@@ -1,13 +1,13 @@
-# locals {
-#   dbsynctags = { resourceGroup = "dbsync" }
-# }
-#
-# resource "aws_cloudwatch_log_group" "dbsync" {
-#   name              = "/${var.env}/ecs/dbsync"
-#   retention_in_days = 30
-#   tags              = local.dbsynctags
-# }
-#
+locals {
+  dbsynctags = { resourceGroup = "dbsync" }
+}
+
+resource "aws_cloudwatch_log_group" "dbsync" {
+  name              = "/${var.env}/ecs/dbsync"
+  retention_in_days = 30
+  tags              = local.dbsynctags
+}
+
 # module "dbsync" {
 #   source = "../../modules/8_dbsync"
 #
