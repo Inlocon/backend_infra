@@ -88,7 +88,7 @@ resource "aws_db_instance" "this" {
   storage_type            = var.storage_type
   storage_encrypted       = true
 
-  db_name                 = "inlocon${var.env}"
+  # db_name                 = "inlocon${var.env}" cannot be set
   username                = var.username
   password                = random_password.db.result
   port                    = var.port

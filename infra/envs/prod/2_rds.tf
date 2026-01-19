@@ -11,7 +11,6 @@ locals {
 module "rds" {
   source = "../../modules/2_rds"
   env        = var.env
-  snapshot_identifier = "rds:test-db-2026-01-19-00-04"
 
   # networking/ access
   vpc_id     = module.network.vpc_id
