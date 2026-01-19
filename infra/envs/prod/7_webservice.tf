@@ -54,20 +54,20 @@ module "webservice" {
   tags = local.webservicetags
 }
 
-# resource "aws_security_group_rule" "alb_to_tasks" {
-#   type                     = "ingress"
-#   from_port                = 8000
-#   to_port                  = 8000
-#   protocol                 = "tcp"
-#   security_group_id        = module.webservice.task_sg_id
-#   source_security_group_id = module.alb.alb_sg_id
-# }
-#
-# resource "aws_security_group_rule" "task_egress_all" {
-#   type              = "egress"
-#   security_group_id = module.webservice.task_sg_id
-#   from_port         = 0
-#   to_port           = 0
-#   protocol          = "-1"
-#   cidr_blocks       = ["0.0.0.0/0"] # ipv4 is enough for now
-# }
+resource "aws_security_group_rule" "alb_to_tasks" {
+  type                     = "ingress"
+  from_port                = 8000
+  to_port                  = 8000
+  protocol                 = "tcp"
+  security_group_id        = module.webservice.task_sg_id
+  source_security_group_id = module.alb.alb_sg_id
+}
+
+resource "aws_security_group_rule" "task_egress_all" {
+  type              = "egress"
+  security_group_id = module.webservice.task_sg_id
+  from_port         = 0
+  to_port           = 0
+  protocol          = "-1"
+  cidr_blocks       = ["0.0.0.0/0"] # ipv4 is enough for now
+}
