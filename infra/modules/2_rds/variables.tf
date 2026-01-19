@@ -81,3 +81,9 @@ variable "secret_name_db_credentials" {
   type        = string
   default     = null
 }
+
+variable "snapshot_identifier" {
+  description = "Necessary, if db should be created from snaphot"
+  type        = string
+  default     = null
+}

@@ -1,34 +1,36 @@
 # ################################
 # # Postgres, single-AZ, private
 # ################################
-#
-# locals {
-#   rds_instance_class    = "db.t4g.small" # maybe .small might be enough for testing
-#   rds_allocated_storage = 60             # GB; should be higher for production
-#   rds_backup_retention  = 7              # days (test)
-# }
-#
-# module "rds" {
-#   source = "../../modules/2_rds"
-#
-#   env        = var.env
-#   vpc_id     = module.network.vpc_id
-#   subnet_ids = module.network.private_subnet_ids
-#   secret_name_db_credentials = local.secret_name_db_credentials
-#
-#   # Engine/version (module defaults to postgres 17; leave null to let AWS pick a minor)
-#   engine_version        = null
-#   instance_class        = local.rds_instance_class
-#   allocated_storage     = local.rds_allocated_storage
-#   backup_retention_days = local.rds_backup_retention
-#
-#   # Private, single-AZ, sane defaults for test
-#   publicly_accessible = false
-#   deletion_protection = false
-#   apply_immediately   = true
-#
-# }
-#
+
+locals {
+  rds_instance_class    = "db.m8g.large" # maybe .small might be enough for testing
+  rds_allocated_storage = 70             #
+  rds_backup_retention  = 7              # days (test)
+}
+
+module "rds" {
+  source = "../../modules/2_rds"
+  env        = var.env
+  snapshot_identifier = "rds:test-db-2026-01-19-00-04"
+
+  # networking/ access
+  vpc_id     = module.network.vpc_id
+  subnet_ids = module.network.private_subnet_ids
+  secret_name_db_credentials = local.secret_name_db_credentials
+
+  # Engine/version (module defaults to postgres 17; leave null to let AWS pick a minor)
+  engine_version        = null
+  instance_class        = local.rds_instance_class
+  allocated_storage     = local.rds_allocated_storage
+  backup_retention_days = local.rds_backup_retention
+
+  # Private, single-AZ, sane defaults for test
+  publicly_accessible = false
+  deletion_protection = false
+  apply_immediately   = true
+
+}
+
 # resource "aws_security_group_rule" "db_from_ec2" {
 #   type                     = "ingress"
 #   security_group_id        = module.rds.db_sg_id

@@ -77,7 +77,7 @@ resource "aws_secretsmanager_secret_version" "creds" {
 ############################################
 
 resource "aws_db_instance" "this" {
-  # snapshot_identifier     = "rds:inlocontest-2026-01-17-00-05"
+  snapshot_identifier     = var.snapshot_identifier # "rds:inlocontest-2026-01-17-00-05"
   identifier              = "${var.env}-db"
   engine                  = var.engine
   engine_version          = var.engine_version
