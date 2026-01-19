@@ -30,6 +30,11 @@ data "aws_iam_policy_document" "bucket" {
     actions = ["s3:*"]
     resources = [aws_s3_bucket.this.arn,"${aws_s3_bucket.this.arn}/*",]
 
+    principals {
+      type        = "*"
+      identifiers = ["*"]
+    }
+
     condition {
       test     = "Bool"
       variable = "aws:SecureTransport"
