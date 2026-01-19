@@ -1,17 +1,17 @@
-# locals {
-#   webservicetags = { resourceGroup = "webservice" }
-# }
-#
-# resource "aws_ecs_cluster" "this" {
-#   name = "${var.env}-backend-cluster"
-# }
-#
-# resource "aws_cloudwatch_log_group" "webservice" {
-#   name              = "/${var.env}/ecs/webservice"
-#   retention_in_days = 30
-#   tags              = local.webservicetags
-# }
-#
+locals {
+  webservicetags = { resourceGroup = "webservice" }
+}
+
+resource "aws_ecs_cluster" "this" {
+  name = "${var.env}-backend-cluster"
+}
+
+resource "aws_cloudwatch_log_group" "webservice" {
+  name              = "/${var.env}/ecs/webservice"
+  retention_in_days = 30
+  tags              = local.webservicetags
+}
+
 # module "webservice" {
 #   source = "../../modules/7_webservice"
 #
