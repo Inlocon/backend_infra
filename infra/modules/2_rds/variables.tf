@@ -1,16 +1,33 @@
+variable "allocated_storage" {
+  description = "Storage size in GB (GP3 recommended). Set per-environment."
+  type        = number
+}
+
+variable "apply_immediately" {
+  description = "Apply changes immediately (true) vs during maintenance window"
+  type        = bool
+  default     = true
+}
+
+variable "backup_retention_days" {
+  description = "Automated backup retention (days). Set per-environment."
+  type        = number
+}
+
+variable "deletion_protection" {
+  description = "Protect DB from deletion"
+  type        = bool
+  default     = false
+}
+
 variable "env" {
   description = "test/prod"
   type        = string
 }
 
-variable "vpc_id" {
-  description = "VPC ID (for the DB security group)"
-  type        = string
-}
-
-variable "subnet_ids" {
-  description = "Private subnet IDs for the DB subnet group (1–2, single AZ is fine)"
-  type        = list(string)
+variable "enabled_cloudwatch_logs_exports" {
+  type    = list(string)
+  default = []
 }
 
 variable "engine" {
@@ -30,50 +47,16 @@ variable "instance_class" {
   type        = string
 }
 
-variable "allocated_storage" {
-  description = "Storage size in GB (GP3 recommended). Set per-environment."
-  type        = number
-}
-
-variable "storage_type" {
-  description = "Storage type"
-  type        = string
-  default     = "gp3"
-}
-
-variable "username" {
-  description = "Master username"
-  type        = string
-  default     = "postgres"
-}
-
-variable "backup_retention_days" {
-  description = "Automated backup retention (days). Set per-environment."
-  type        = number
-}
-
-variable "deletion_protection" {
-  description = "Protect DB from deletion"
-  type        = bool
-  default     = false
-}
-
-variable "publicly_accessible" {
-  description = "Should the DB be publicly accessible? (No for private)"
-  type        = bool
-  default     = false
-}
-
 variable "port" {
   description = "DB port"
   type        = number
   default     = 5432
 }
 
-variable "apply_immediately" {
-  description = "Apply changes immediately (true) vs during maintenance window"
+variable "publicly_accessible" {
+  description = "Should the DB be publicly accessible? (No for private)"
   type        = bool
-  default     = true
+  default     = false
 }
 
 variable "secret_name_db_credentials" {
@@ -86,4 +69,32 @@ variable "snapshot_identifier" {
   description = "Necessary, if db should be created from snaphot"
   type        = string
   default     = null
+}
+
+variable "storage_type" {
+  description = "Storage type"
+  type        = string
+  default     = "gp3"
+}
+
+variable "subnet_ids" {
+  description = "Private subnet IDs for the DB subnet group (1–2, single AZ is fine)"
+  type        = list(string)
+}
+
+variable "tags" {
+  description = "tags"
+  type        = map(string)
+  default     = {resourceGroup = "rds"}
+}
+
+variable "username" {
+  description = "Master username"
+  type        = string
+  default     = "postgres"
+}
+
+variable "vpc_id" {
+  description = "VPC ID (for the DB security group)"
+  type        = string
 }

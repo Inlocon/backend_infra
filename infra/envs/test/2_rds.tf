@@ -1,3 +1,7 @@
+locals {
+  rdstags = { resourceGroup = "rds" }
+}
+
 # ################################
 # # Postgres, single-AZ, private
 # ################################
@@ -21,7 +25,14 @@ module "rds" {
   deletion_protection = false
   apply_immediately   = true
 
+  enabled_cloudwatch_logs_exports = ["postgresql"]
+
+  tags = local.rdstags
 }
+
+# ################################
+# # security groups
+# ################################
 
 resource "aws_security_group_rule" "db_from_ec2" {
   type                     = "ingress"
@@ -49,3 +60,13 @@ resource "aws_security_group_rule" "db_from_webservice" {
 #   to_port                  = 5432
 #   source_security_group_id = module.dbsync.task_sg_id
 # }
+
+# ##########
+# # logging
+# ##########
+
+resource "aws_cloudwatch_log_group" "rds" {
+  name              = "/${var.env}/rds"
+  retention_in_days = 30
+  tags = local.rdstags
+}

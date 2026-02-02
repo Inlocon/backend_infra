@@ -102,6 +102,8 @@ resource "aws_db_instance" "this" {
   parameter_group_name    = aws_db_parameter_group.this.name
   skip_final_snapshot     = true
 
+  enabled_cloudwatch_logs_exports = var.enabled_cloudwatch_logs_exports
+
   tags = local.tags
 }
 
