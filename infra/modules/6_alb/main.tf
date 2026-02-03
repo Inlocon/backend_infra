@@ -118,9 +118,32 @@ resource "aws_lb_listener" "https" {
   certificate_arn   = var.certificate_arn
 
   default_action {
+    type = "fixed-response"
+
+    fixed_response {
+      content_type = "text/plain"
+      message_body = "Invalid Host header"
+      status_code  = "400"
+    }
+  }
+
+  tags = local.tags
+}
+
+resource "aws_lb_listener_rule" "allow_known_hosts" {
+  listener_arn = aws_lb_listener.https[0].arn
+  priority     = 1
+
+  action {
     type             = "forward"
     target_group_arn = aws_lb_target_group.app.arn
   }
 
-  tags = local.tags
+  condition {
+    host_header {
+      values = [
+        "*.backend.inlocon.de",
+      ]
+    }
+  }
 }
