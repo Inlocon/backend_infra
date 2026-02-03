@@ -17,7 +17,7 @@ module "rds" {
 
   engine                = "postgres"
   engine_version        = null # aws picks default, currently 17
-  instance_class        = "db.m8g.large"
+  instance_class        = "db.m8g.2xlarge"
   allocated_storage     = 70 # GB
   backup_retention_days = 7 # days
 
