@@ -105,6 +105,10 @@ resource "aws_db_instance" "this" {
   enabled_cloudwatch_logs_exports = var.enabled_cloudwatch_logs_exports
 
   tags = local.tags
+
+  blue_green_update {
+    enabled = var.blue_green_update
+  }
 }
 
 # Second secret version: add connection details after instance exists

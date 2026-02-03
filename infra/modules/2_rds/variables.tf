@@ -14,6 +14,12 @@ variable "backup_retention_days" {
   type        = number
 }
 
+variable "blue_green_update" {
+  description = "Use blue/green update (e.g.: bigger db instance) - should be set to true in prod."
+  type        = bool
+  default = false
+}
+
 variable "deletion_protection" {
   description = "Protect DB from deletion"
   type        = bool
