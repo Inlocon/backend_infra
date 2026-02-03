@@ -49,3 +49,13 @@ resource "aws_security_group_rule" "db_from_dbsync" {
   to_port                  = 5432
   source_security_group_id = module.dbsync.task_sg_id
 }
+
+# ##########
+# # logging
+# ##########
+
+resource "aws_cloudwatch_log_group" "rds" {
+  name              = "/aws/rds/instance/${var.env}-db/postgresql"
+  retention_in_days = 30
+  tags = local.rdstags
+}

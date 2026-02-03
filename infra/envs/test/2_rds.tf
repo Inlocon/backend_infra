@@ -66,7 +66,7 @@ resource "aws_security_group_rule" "db_from_webservice" {
 # ##########
 
 resource "aws_cloudwatch_log_group" "rds" {
-  name              = "/${var.env}/rds"
+  name              = "/aws/rds/instance/${var.env}-db/postgresql"
   retention_in_days = 30
   tags = local.rdstags
 }
