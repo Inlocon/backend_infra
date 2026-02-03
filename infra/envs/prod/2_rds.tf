@@ -1,3 +1,7 @@
+locals {
+  rdstags = { resourceGroup = "rds" }
+}
+
 # ################################
 # # Postgres, single-AZ, private
 # ################################
@@ -21,7 +25,11 @@ module "rds" {
   deletion_protection = false
   apply_immediately   = true
 
+  enabled_cloudwatch_logs_exports = ["postgresql"]
+
+  tags = local.rdstags
 }
+
 
 resource "aws_security_group_rule" "db_from_ec2" {
   type                     = "ingress"
