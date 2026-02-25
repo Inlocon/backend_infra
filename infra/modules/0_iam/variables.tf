@@ -13,7 +13,12 @@ variable "secret_name_db_credentials" {
   type        = string
 }
 
-variable "bucket_name" {
+variable "bucket_name_config" {
   description = "Bucket for database dumps and config files."
+  type        = string
+}
+
+variable "bucket_name_files" {
+  description = "Bucket for file uploads (e.g. tenderpoolfile)."
   type        = string
 }

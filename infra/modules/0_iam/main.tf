@@ -77,11 +77,11 @@ resource "aws_iam_role_policy_attachment" "ec2_ssm" {
 data "aws_iam_policy_document" "ec2_loader" {
   statement {
     actions = ["s3:GetObject"]
-    resources = ["arn:aws:s3:::${var.bucket_name}/*"]
+    resources = ["arn:aws:s3:::${var.bucket_name_config}/*"]
   }
   statement {
     actions = ["s3:ListBucket"]
-    resources = ["arn:aws:s3:::${var.bucket_name}"]
+    resources = ["arn:aws:s3:::${var.bucket_name_config}"]
   }
   statement {
     actions = ["secretsmanager:GetSecretValue"]
@@ -115,7 +115,7 @@ resource "aws_iam_role_policy_attachment" "ec2_loader" {
 data "aws_iam_policy_document" "webservice_execution" {
   statement {
     actions = ["s3:GetBucketLocation", "s3:GetObject"]
-    resources = ["arn:aws:s3:::${var.bucket_name}", "arn:aws:s3:::${var.bucket_name}/*"]
+    resources = ["arn:aws:s3:::${var.bucket_name_config}", "arn:aws:s3:::${var.bucket_name_config}/*"]
   }
 }
 
@@ -154,11 +154,19 @@ data "aws_iam_policy_document" "webservice_task" {
   # (env files are fetched by the execution role)
   statement {
     actions = ["s3:GetObject"]
-    resources = ["arn:aws:s3:::${var.bucket_name}/*"]
+    resources = ["arn:aws:s3:::${var.bucket_name_config}/*"]
   }
   statement {
     actions = ["s3:GetBucketLocation"]
-    resources = ["arn:aws:s3:::${var.bucket_name}"]
+    resources = ["arn:aws:s3:::${var.bucket_name_config}"]
+  }
+  statement {
+    actions = ["s3:GetObject", "s3:PutObject"]
+    resources = ["arn:aws:s3:::${var.bucket_name_files}/*"]
+  }
+  statement {
+    actions = ["s3:GetBucketLocation"]
+    resources = ["arn:aws:s3:::${var.bucket_name_files}"]
   }
   statement {
     actions = ["secretsmanager:DescribeSecret", "secretsmanager:GetSecretValue"]
@@ -195,11 +203,11 @@ data "aws_iam_policy_document" "dbsync_task" {
   # (env files are fetched by the execution role)
 #   statement {
 #     actions = ["s3:GetObject"]
-#     resources = ["arn:aws:s3:::${var.bucket_name}/*"]
+#     resources = ["arn:aws:s3:::${var.bucket_name_config}/*"]
 #   }
 #   statement {
 #     actions = ["s3:GetBucketLocation"]
-#     resources = ["arn:aws:s3:::${var.bucket_name}"]
+#     resources = ["arn:aws:s3:::${var.bucket_name_config}"]
 #   }
   statement {
     actions = ["secretsmanager:DescribeSecret", "secretsmanager:GetSecretValue"]
