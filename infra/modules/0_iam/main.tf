@@ -161,7 +161,7 @@ data "aws_iam_policy_document" "webservice_task" {
     resources = ["arn:aws:s3:::${var.bucket_name_config}"]
   }
   statement {
-    actions = ["s3:GetObject", "s3:PutObject"]
+    actions = ["s3:GetObject", "s3:PutObject", "s3:DeleteObject", "s3:DeleteObjectVersion"]
     resources = ["arn:aws:s3:::${var.bucket_name_files}/*"]
   }
   statement {
