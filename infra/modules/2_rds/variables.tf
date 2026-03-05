@@ -53,6 +53,11 @@ variable "instance_class" {
   type        = string
 }
 
+variable "max_allocated_storage" {
+  description = "Maximum storage (GB) for RDS storage autoscaling. When > allocated_storage, enables autoscaling."
+  type        = number
+}
+
 variable "port" {
   description = "DB port"
   type        = number

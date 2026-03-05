@@ -85,6 +85,7 @@ resource "aws_db_instance" "this" {
   db_subnet_group_name    = aws_db_subnet_group.this.name
   vpc_security_group_ids  = [aws_security_group.db_.id]
   allocated_storage       = var.allocated_storage
+  max_allocated_storage   = var.max_allocated_storage
   storage_type            = var.storage_type
   storage_encrypted       = true
 
