@@ -10,5 +10,5 @@ module "ec2_loader" {
   # b) still secure enough (as long as ... not the the associated sg is messed up AND a webserver or similar
   # shannanigangs are installed on the instance AT THE SAME TIME)
   subnet_id = module.network.public_subnet_ids[0]
-  volume_size_gb = 50
+  volume_size_gb = 150
 }
