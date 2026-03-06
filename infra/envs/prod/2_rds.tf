@@ -27,7 +27,7 @@ module "rds" {
   apply_immediately   = true
 
   enabled_cloudwatch_logs_exports = ["postgresql"]
-  blue_green_update = true
+  blue_green_update = false
 
   tags = local.rdstags
 }
