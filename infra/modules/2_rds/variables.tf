@@ -88,6 +88,18 @@ variable "storage_type" {
   default     = "gp3"
 }
 
+variable "iops" {
+  description = "Provisioned IOPS for gp3 storage. Requires allocated_storage >= 400 GB for PostgreSQL. 3000 baseline included, range 3000-16000 (RDS gp3 max). Omit for baseline."
+  type        = number
+  default     = null
+}
+
+variable "storage_throughput" {
+  description = "Storage throughput in MB/s for gp3. Baseline 125 MB/s included. Required when iops > 3000. Range 125-1000. Omit for baseline."
+  type        = number
+  default     = null
+}
+
 variable "subnet_ids" {
   description = "Private subnet IDs for the DB subnet group (1–2, single AZ is fine)"
   type        = list(string)
