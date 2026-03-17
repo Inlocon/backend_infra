@@ -94,6 +94,10 @@ data "aws_iam_policy_document" "ec2_loader" {
     actions = ["rds:DescribeDBInstances"]
     resources = ["*"]
   }
+  statement {
+    actions   = ["s3:PutObject"]
+    resources = ["arn:aws:s3:::${var.bucket_name_files}/bots/*"]
+  }
 }
 
 resource "aws_iam_policy" "ec2_loader" {
