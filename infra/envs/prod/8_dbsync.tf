@@ -29,7 +29,7 @@ module "dbsync" {
   container_image    = "864981740157.dkr.ecr.eu-central-1.amazonaws.com/test-dbsync:latest"
   container_name     = "dbsync"
   cpu                = 512
-  memory             = 1024
+  memory             = 4096
   env_s3_bucket_name = module.s3.bucket_name
   env_s3_bucket_key  = "${var.env}.dbsync.env"
 
